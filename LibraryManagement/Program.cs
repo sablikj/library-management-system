@@ -1,7 +1,14 @@
+using LibraryManagement.Models;
+using LibraryManagement.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<DatabaseSettings>(
+    builder.Configuration.GetSection("LibraryManagementDatabase"));
+
+builder.Services.AddSingleton<BooksService>();
 
 var app = builder.Build();
 
