@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Controllers;
+﻿using LibraryManagement.Areas.Admin.Controllers;
+using LibraryManagement.Controllers;
 using LibraryManagement.Models;
 using LibraryManagement.Models.Identity;
 using LibraryManagement.Models.ViewModels;
@@ -45,7 +46,13 @@ namespace LibraryManagement.Areas.Security.Controllers
                 {
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(appUser, loginVM.Password, false, false);
                     if (result.Succeeded)
-                    {                        
+                    {
+                        // Admin redirected to dashboard
+                        var roles = await _userManager.GetRolesAsync(appUser);
+                        if (roles.Contains("Librarian"))
+                        {
+                            return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
+                        }
                         return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""), new { area = "" });
                     }                    
                 }

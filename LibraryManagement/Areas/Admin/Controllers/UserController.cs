@@ -45,8 +45,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     UserName = user.Username,
                     Email = user.Email,
                     RentedBooks = user.RentedBooks,
-                    Approved = user.Approved,
-                    Banned = user.Banned
+                    Approved = true,
+                    Banned = false
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
