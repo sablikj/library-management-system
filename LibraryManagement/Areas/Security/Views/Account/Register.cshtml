@@ -1,0 +1,116 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+<div class="container pt-2">
+    <div id="logreg-forms">
+        <form asp-action="Register" method="post" class="form-signup">        
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Create an account</h1>
+            <hr>     
+            
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="p-1 mb-2 bg-danger text-black">@ViewBag.ErrorMessage</div>
+            }    
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="RepeatedPassword" class="control-label"></label>
+                        <input asp-for="RepeatedPassword" class="form-control" type="password" />
+                        <span asp-validation-for="RepeatedPassword" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Surname" class="control-label"></label>
+                        <input asp-for="Surname" class="form-control" />
+                        <span asp-validation-for="Surname" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>            
+            <div class="form-group">
+                <label asp-for="SNN" class="control-label"></label>
+                <input asp-for="SNN" class="form-control" />
+                <span asp-validation-for="SNN" class="text-danger"></span>
+            </div>            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Street" class="control-label"></label>
+                        <input asp-for="Street" class="form-control" />
+                        <span asp-validation-for="Street" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="HouseNumber" class="control-label"></label>
+                        <input asp-for="HouseNumber" class="form-control" />
+                        <span asp-validation-for="HouseNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>   
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="ZipCode" class="control-label"></label>
+                        <input asp-for="ZipCode" class="form-control" />
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>        
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

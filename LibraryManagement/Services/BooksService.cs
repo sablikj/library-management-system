@@ -16,7 +16,7 @@ namespace LibraryManagement.Services
                 databaseSettings.Value.ConnectionString);
 
             var mongoDatabase = mongoClient.GetDatabase(
-                databaseSettings.Value.DatabaseName);
+                databaseSettings.Value.Name);
 
             _booksCollection = mongoDatabase.GetCollection<Book>(
                 databaseSettings.Value.BooksCollectionName);

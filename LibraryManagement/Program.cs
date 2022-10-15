@@ -1,12 +1,21 @@
 using LibraryManagement.Models;
+using LibraryManagement.Models.Identity;
 using LibraryManagement.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.Configure<DatabaseSettings>(
-    builder.Configuration.GetSection("LibraryManagementDatabase"));
+
+var dbSettings = builder.Configuration.GetSection("LibraryManagementDatabase").Get<DatabaseSettings>();
+
+// Db init ?
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("LibraryManagementDatabase"));
+
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
+    dbSettings.ConnectionString, dbSettings.Name
+    );
 
 builder.Services.AddSingleton<BooksService>();
 
@@ -25,10 +34,23 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
+/*
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+*/
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();

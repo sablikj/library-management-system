@@ -1,0 +1,45 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LibraryManagement.Models
+{
+    public class User
+    {
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Surname { get; set; }
+
+        [Required]
+        public int SNN { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Street { get; set; }
+
+        [Required]
+        public int HouseNumber { get; set; }
+
+        [Required]
+        public int ZipCode { get; set; }
+
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid Email")]
+        public string Email { get; set; }
+
+        public string[]? RentedBooks { get; set; }
+
+        [Required]
+        public bool Approved { get; set; }
+
+        public bool Banned { get; set; }
+    }
+}

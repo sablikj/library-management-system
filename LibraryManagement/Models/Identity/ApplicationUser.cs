@@ -1,0 +1,38 @@
+﻿using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDbGenericRepository.Attributes;
+using System.ComponentModel.DataAnnotations;
+
+namespace LibraryManagement.Models.Identity
+{
+    [CollectionName("Users")]
+    public class ApplicationUser : MongoIdentityUser<Guid>
+    {
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Surname { get; set; }
+
+        [Required]
+        public int SNN { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Street { get; set; }
+
+        [Required]
+        public int HouseNumber { get; set; }
+
+        [Required]
+        public int ZipCode { get; set; } 
+
+        public string[]? RentedBooks { get; set; }
+
+        [Required]
+        public bool Approved { get; set; }
+
+        public bool Banned { get; set; }
+    }
+}

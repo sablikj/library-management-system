@@ -1,0 +1,42 @@
+﻿@model LibraryManagement.Models.UserRole
+
+@{
+    ViewData["Title"] = "CreateRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CreateRole</h1>
+
+<h4>UserRole</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @if (ViewBag.Message != null)
+        {
+            <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+        }
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="p-1 mb-2 bg-success text-white">@ViewBag.ErrorMessage</div>
+        }
+        <form asp-action="CreateRole">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

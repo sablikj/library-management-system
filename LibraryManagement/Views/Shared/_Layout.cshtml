@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LibraryManagement</title>
+    <title>@ViewData["Title"] - OpenLibrary</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LibraryManagement.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
@@ -26,6 +27,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    @{
+                        @if (User.Identity.IsAuthenticated == false)
+                        {
+                            <ul class="navbar-nav navbar-right">
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Security" asp-controller="Account" asp-action="Register"><span class="glyphicon"></span> Sign Up</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Security" asp-controller="Account" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item">
+                                    <p class="nav-link" href="#">Logged as @User.Identity.Name</p>                                    
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Security" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                                </li>
+                            </ul>
+                        }
+                    }
                 </div>
             </div>
         </nav>
@@ -38,7 +59,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - LibraryManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; OpenLibrary | by Jan Sáblík & David Bilnica 2022 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
