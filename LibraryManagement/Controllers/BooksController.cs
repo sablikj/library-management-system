@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using LibraryManagement.Models;
 using LibraryManagement.Services;
+using LibraryManagement.Models.Entity;
 
 namespace LibraryManagement.Controllers
 {

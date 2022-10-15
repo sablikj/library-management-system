@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Models;
+using LibraryManagement.Models.Entity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
