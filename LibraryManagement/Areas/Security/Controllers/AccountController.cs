@@ -82,7 +82,7 @@ namespace LibraryManagement.Areas.Security.Controllers
                 {
                     Name = registerVM.Name,
                     Surname = registerVM.Surname,
-                    SNN = registerVM.SNN,
+                    SSN = registerVM.SNN,
                     City = registerVM.City,
                     Street = registerVM.Street,
                     HouseNumber = registerVM.HouseNumber,

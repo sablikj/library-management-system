@@ -1,5 +1,4 @@
-﻿using LibraryManagement.Areas.Admin.Models.ViewModels;
-using LibraryManagement.Controllers;
+﻿using LibraryManagement.Controllers;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +6,7 @@ using System.Data;
 using MongoDB.Driver.Linq;
 using MongoDB.Driver;
 using LibraryManagement.Models.Entity;
+using LibraryManagement.Areas.Admin.Models.ViewModels;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {

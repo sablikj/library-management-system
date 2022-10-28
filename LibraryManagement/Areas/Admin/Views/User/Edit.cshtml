@@ -1,17 +1,17 @@
 ﻿@model User
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "User edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles
-{
+    {
     <link rel="stylesheet" href="~/css/login.css" />
 }
     <div class="container pt-2">
         <div id="logreg-forms">
-            <form asp-action="Create" method="post" class="form-signup">
-                <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Create an account</h1>
+            <form asp-action="Edit" method="post" class="form-signup">
+                <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Edit user</h1>
                 <hr>
 
             @if (ViewBag.ErrorMessage != null)
@@ -23,7 +23,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Username" class="control-label"></label>
-                        <input asp-for="Username" class="form-control" />
+                        <input asp-for="Username" class="form-control" readonly />
                         <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
                 </div>
@@ -34,16 +34,7 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" type="password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                </div>                
-            </div>
+            </div>            
             <div class="row">
                 <div class="col">
                     <div class="form-group">
@@ -99,7 +90,7 @@
             </div>
             <div class="row">
                 <div class="col p-2 text-center">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </div>
         </form>
@@ -107,6 +98,8 @@
 </div>
 
 @section Scripts
-{
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

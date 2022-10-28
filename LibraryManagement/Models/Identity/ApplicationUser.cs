@@ -14,7 +14,7 @@ namespace LibraryManagement.Models.Identity
         public string Surname { get; set; }
 
         [Required]
-        public int SNN { get; set; }
+        public int SSN { get; set; }
 
         [Required]
         public string City { get; set; }

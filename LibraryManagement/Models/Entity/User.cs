@@ -19,7 +19,7 @@ namespace LibraryManagement.Models.Entity
         public string Surname { get; set; }
 
         [Required]
-        public int SNN { get; set; }
+        public int SSN { get; set; }
 
         [Required]
         public string City { get; set; }
@@ -36,9 +36,8 @@ namespace LibraryManagement.Models.Entity
         [Required]
         [BsonElement("UserName")]
         public string Username { get; set; }
-
-        [Required]
-        public string Password { get; set; }
+        
+        public string? Password { get; set; }
 
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email")]
