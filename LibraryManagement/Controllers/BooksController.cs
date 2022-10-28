@@ -8,9 +8,9 @@ namespace LibraryManagement.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly BooksService _booksService;
+        private readonly DatabaseService _booksService;
 
-        public BooksController(BooksService booksService) =>
+        public BooksController(DatabaseService booksService) =>
             _booksService = booksService;
 
         [HttpGet]

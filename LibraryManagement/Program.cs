@@ -17,7 +17,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().AddMongoDbStore
     dbSettings.ConnectionString, dbSettings.Name
     );
 
-builder.Services.AddSingleton<BooksService>();
+builder.Services.AddSingleton<DatabaseService>();
 
 var app = builder.Build();
 

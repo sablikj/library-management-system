@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.Models
+﻿namespace LibraryManagement.Models.Entity
 {
     public class UserRole
     {

@@ -34,7 +34,7 @@ namespace LibraryManagement.Models.Entity
         public string ISBN { get; set; } = null!;
 
         [Required]
-        public byte[] ImageSource { get; set; } = null!;
+        public byte[] Image { get; set; } = null!;
 
         [Required]
         [StringLength(50)]

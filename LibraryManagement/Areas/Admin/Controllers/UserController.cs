@@ -1,8 +1,8 @@
 ﻿using LibraryManagement.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using LibraryManagement.Models;
 using Microsoft.AspNetCore.Authorization;
+using LibraryManagement.Models.Entity;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -57,6 +57,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     ViewBag.Message = "User created successfully.";
+                    return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
                 }
                 else
                 {
@@ -73,6 +74,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 foreach (var error in errors)
                 {
                     Console.WriteLine(error.ErrorMessage);
+                    ModelState.AddModelError("", error.ErrorMessage);
+                    ViewBag.ErrorMessage = error.ErrorMessage;
                 }
 
             }

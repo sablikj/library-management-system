@@ -1,4 +1,4 @@
-﻿
+﻿@model DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +9,75 @@
 <div class="card-deck">
     <div class="card">        
         <div class="card-body">
-            <h5 class="card-title">Users</h5>            
+            <h5 class="card-title">Users</h5>
+            <a style="margin-bottom:5px;" class="btn btn-outline-primary text-end" asp-controller="User" asp-action="Create"><i class="bi bi-plus-circle"></i> Add user</a>
+            <div class="container">
+                <div class="table-responsive">
+                    <table class="table">                        
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    Name
+                                </th>
+                                <th class="text-center">
+                                    Surname
+                                </th>
+                                <th class="text-center">
+                                    Email
+                                </th>
+                                <th class="text-center">
+                                    Street
+                                </th>
+                                <th class="text-center">
+                                    City
+                                </th>
+                                <th class="text-center">
+                                    Approved
+                                </th>
+                                <th class="text-center">
+                                    Banned
+                                </th>
+                                <th class="text-center">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Users)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Surname)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Street)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.City)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Approved)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Banned)
+                                    </td>
+                                    <td class="text-center">
+                                        <a style="margin-bottom:5px;" class="btn btn-warning" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                                        <a style="margin-bottom:5px;" class="btn btn-primary" asp-controller="User" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                                        <a style="margin-bottom:5px;" class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card">
@@ -22,3 +90,4 @@
         </div> 
     </div>
 </div>
+

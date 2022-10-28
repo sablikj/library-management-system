@@ -1,9 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
+using MongoDbGenericRepository.Attributes;
 
-namespace LibraryManagement.Models
+namespace LibraryManagement.Models.Entity
 {
+    [CollectionName("Users")]
+    [BsonIgnoreExtraElements]
     public class User
     {
+        [BsonId]
+        [BsonGuidRepresentation(GuidRepresentation.Standard)]
+        public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
 
@@ -15,7 +23,7 @@ namespace LibraryManagement.Models
 
         [Required]
         public string City { get; set; }
-
+        
         [Required]
         public string Street { get; set; }
 
@@ -26,6 +34,7 @@ namespace LibraryManagement.Models
         public int ZipCode { get; set; }
 
         [Required]
+        [BsonElement("UserName")]
         public string Username { get; set; }
 
         [Required]

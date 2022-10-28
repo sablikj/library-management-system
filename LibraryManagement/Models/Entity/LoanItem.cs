@@ -18,7 +18,7 @@ namespace LibraryManagement.Models.Entity
         //public int Amount { get; set; }
         //public double Price { get; set; }
 
-        public BookLoan BookLoan { get; set; }
+        public Loan BookLoan { get; set; }
         public Book Book { get; set; }
     }
 }
