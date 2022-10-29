@@ -23,6 +23,11 @@ namespace LibraryManagement.Areas.Admin.Controllers
             _roleManager = roleManager;
             _dbService = dbService;
         }
+
+        public IActionResult Index()
+        {
+            return View(_dbService.usersCollection.AsQueryable<User>().ToList());
+        }
         public IActionResult Create()
         {
             return View();
@@ -32,8 +37,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             return View();
         }
 
-        // Used for register -- rework for admin adding customers
-
+        // User register
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {

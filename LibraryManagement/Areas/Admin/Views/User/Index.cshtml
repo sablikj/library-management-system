@@ -1,0 +1,88 @@
+﻿@model IEnumerable<LibraryManagement.Models.Entity.User>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/index.css" />
+}
+    <div class="container-fluid">
+        <div class="card shadow border-0 mb-7">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                Registered Users
+                <a class="btn btn-sm btn-outline-primary" asp-controller="User" asp-action="Create"><i class="bi bi-plus-circle"></i> Add user</a>
+            </h5>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Street</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Zip Code</th>
+                            <th scope="col">Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Surname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Street)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.City)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ZipCode)
+                            </td>
+                            <td>
+                                @if (item.Approved == true)
+                                {
+                                    <span class="badge badge-lg badge-dot">
+                                        <i class="bg-success"></i>Approved
+                                    </span>
+                                }
+                                @if (item.Approved == false && item.Banned == false)
+                                {
+                                    <span class="badge badge-lg badge-dot">
+                                        <i class="bg-warning"></i>Not approved
+                                    </span>
+                                }
+                                @if (item.Banned == true)
+                                {
+                                    <span class="badge badge-lg badge-dot">
+                                        <i class="bg-danger"></i>Banned
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a style="margin-bottom:5px;" class="btn btn-warning" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                                <a style="margin-bottom:5px;" class="btn btn-primary" asp-controller="User" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                                <a style="margin-bottom:5px;" class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer border-0 py-5">
+            <!--TODO Add pagination-->
+            <span class="text-muted text-sm">Showing X items out of X results found</span>
+        </div>
+    </div>
+</div>

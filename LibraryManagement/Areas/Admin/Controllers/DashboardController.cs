@@ -25,9 +25,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
             dashboardViewModel.Books = dbService.bookCollection.AsQueryable<Book>().ToList();
             dashboardViewModel.Users = dbService.usersCollection.AsQueryable<User>().ToList();
-            dashboardViewModel.Loans = dbService.loanCollection.AsQueryable<Loan>().ToList();
-
-            Console.WriteLine(dashboardViewModel.Users.Count);
+            dashboardViewModel.Loans = dbService.loanCollection.AsQueryable<Loan>().ToList();            
 
             return View(dashboardViewModel);
         }

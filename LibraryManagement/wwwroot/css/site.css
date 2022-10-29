@@ -22,6 +22,19 @@ body {
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.icon-circle.icon-lg {
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
+}
+
+.rounded-circle {
+    border-radius: 50% !important
+}
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;

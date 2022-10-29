@@ -4,94 +4,191 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Dashboard</h1>
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/index.css" />
+}
 
-<div class="card-deck">
-    <div class="card">        
-        <div class="card-body">
-            <h5 class="card-title">Users</h5>
-            <a style="margin-bottom:5px;" class="btn btn-outline-primary text-end" asp-controller="User" asp-action="Create"><i class="bi bi-plus-circle"></i> Add user</a>
-            <div class="container">
-                <div class="table-responsive">
-                    <table class="table">                        
-                        <thead>
-                            <tr>
-                                <th class="text-center">
-                                    Name
-                                </th>
-                                <th class="text-center">
-                                    Surname
-                                </th>
-                                <th class="text-center">
-                                    Email
-                                </th>
-                                <th class="text-center">
-                                    Street
-                                </th>
-                                <th class="text-center">
-                                    City
-                                </th>
-                                <th class="text-center">
-                                    Approved
-                                </th>
-                                <th class="text-center">
-                                    Banned
-                                </th>
-                                <th class="text-center">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Users)
-                            {
-                                <tr>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Surname)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Street)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.City)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Approved)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Banned)
-                                    </td>
-                                    <td class="text-center">
-                                        @if (item.Approved == false)
-                                        {
-                                            <a style="margin-bottom:5px;" class="btn btn-success" asp-controller="User" asp-action="Approve" asp-route-id="@item.Id"><i class="bi bi-check2"></i></a>
-                                        }
-                                        <a style="margin-bottom:5px;" class="btn btn-warning" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
-                                        <a style="margin-bottom:5px;" class="btn btn-primary" asp-controller="User" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
-                                        <a style="margin-bottom:5px;" class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>                                        
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+<div class="container-fluid">
+    <!-- Card stats -->
+    <div class="row g-6 mb-6">
+        <!--Total Users-->
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Users</span>
+                            <span class="h3 font-bold mb-0">@Model.Users.Count</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-success text-success me-2">
+                            <i class="bi bi-arrow-up me-1"></i>13%
+                        </span>
+                        <span class="text-nowrap text-xs text-muted">Since last month</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Active Loans-->
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Active Loans</span>
+                            <span class="h3 font-bold mb-0">@Model.Loans.Count</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
+                                <i class="bi bi-bookmarks"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-success text-success me-2">
+                            <i class="bi bi-arrow-up me-1"></i>30%
+                        </span>
+                        <span class="text-nowrap text-xs text-muted">Since last month</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Available Books-->
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Available Books</span>
+                            <span class="h3 font-bold mb-0">@Model.Books.Count</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-success text-white text-lg rounded-circle">
+                                <i class="bi bi-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
+                            <i class="bi bi-arrow-down me-1"></i>-5%
+                        </span>
+                        <span class="text-nowrap text-xs text-muted">Since last month</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Total Books-->
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Books</span>
+                            <span class="h3 font-bold mb-0">@Model.Books.Count</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
+                                <i class="bi bi-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-0 text-sm">
+                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
+                            <i class="bi bi-arrow-down me-1"></i>-5%
+                        </span>
+                        <span class="text-nowrap text-xs text-muted">Since last month</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Books</h5>
-        </div>
-    </div> <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Loans</h5>
-        </div> 
-    </div>
-</div>
 
+    <!--Not Approved Users-->
+    @if (Model.Users.Any(u => u.Approved == false))
+    {
+        <div class="card shadow border-0 mb-7">
+            <div class="card-header">
+                <h5 class="mb-0">Users waiting for approval</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Street</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Zip Code</th>
+                            <th scope="col">Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Users)
+                        {
+                            @if (item.Approved == false)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Surname)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Street)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.City)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ZipCode)
+                                    </td>
+                                    <td>
+                                        @if (item.Approved == true)
+                                        {
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-success"></i>Approved
+                                            </span>
+                                        }
+                                        @if (item.Approved == false && item.Banned == false)
+                                        {
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-warning"></i>Not approved
+                                            </span>
+                                        }
+                                        @if (item.Banned == true)
+                                        {
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-danger"></i>Banned
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a style="margin-bottom:5px;" class="btn btn-success" asp-controller="User" asp-action="Approve" asp-route-id="@item.Id"><i class="bi bi-check2"></i></a>
+                                        <a style="margin-bottom:5px;" class="btn btn-primary" asp-controller="User" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                                        <a style="margin-bottom:5px;" class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer border-0 py-5">
+                <span class="text-muted text-sm">Showing 10 items out of 250 results found</span>
+            </div>
+        </div>
+    }        
+</div>
