@@ -71,9 +71,10 @@
                                 }
                             </td>
                             <td class="text-center">
-                                <a style="margin-bottom:5px;" class="btn btn-warning" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
-                                <a style="margin-bottom:5px;" class="btn btn-primary" asp-controller="User" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
-                                <a style="margin-bottom:5px;" class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="User" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-warning" asp-controller="User" asp-action="Ban" asp-route-id="@item.Id"><i class="bi bi-exclamation-lg"></i></a>
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                     }
@@ -82,7 +83,7 @@
         </div>
         <div class="card-footer border-0 py-5">
             <!--TODO Add pagination-->
-            <span class="text-muted text-sm">Showing X items out of X results found</span>
+            <span class="text-muted text-sm">Showing @Model.Count() items out of @Model.Count() results found</span>
         </div>
     </div>
 </div>

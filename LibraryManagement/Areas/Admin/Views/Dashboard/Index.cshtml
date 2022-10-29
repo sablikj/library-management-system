@@ -134,7 +134,7 @@
                     <tbody>
                         @foreach (var item in Model.Users)
                         {
-                            @if (item.Approved == false)
+                            @if (item.Approved == false && item.Banned == false)
                             {
                                 <tr>
                                     <td>

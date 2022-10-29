@@ -28,6 +28,22 @@ namespace LibraryManagement.Areas.Admin.Controllers
         {
             return View(_dbService.usersCollection.AsQueryable<User>().ToList());
         }
+
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var filter = Builders<User>.Filter.Eq(user => user.Id, id);
+            var user = await _dbService.usersCollection.Find(filter).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
         public IActionResult Create()
         {
             return View();
@@ -219,6 +235,30 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 var filter = Builders<User>.Filter.Eq(user => user.Id, id);
 
                 var update = Builders<User>.Update.Set(c => c.Approved, true);
+                var result = await _dbService.usersCollection.UpdateOneAsync(filter, update);
+
+                return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
+            }
+            else
+            {
+                // TODO: add error view
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Ban(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                var filter = Builders<User>.Filter.Eq(user => user.Id, id);
+
+                var update = Builders<User>.Update
+                                           .Set(c => c.Banned, true)
+                                           .Set(c => c.Approved, false);
                 var result = await _dbService.usersCollection.UpdateOneAsync(filter, update);
 
                 return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });

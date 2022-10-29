@@ -1,0 +1,105 @@
+﻿@model LibraryManagement.Models.Entity.User
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center" id="logreg-forms" style="border-radius: .75rem">   
+
+    <div class="bg-white px-4 w-50" style="border-radius: .75rem">        
+        <h1 class="pt-2 d-flex justify-content-between align-items-center">
+            User detail
+            <span>
+                <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary text-white" asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil"></i></a>
+                <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
+            </span>            
+        </h1>
+        <hr />
+        <dl class="row" style="width:500px">
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Surname)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Surname)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.SSN)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.SSN)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Street)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Street)
+            </dd>
+            <dt class = "col-sm-4">
+                House Number
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.HouseNumber)
+            </dd>
+            <dt class = "col-sm-4">
+                Zip Code
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.ZipCode)
+            </dd>
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Username)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Username)
+            </dd>            
+            <dt class = "col-sm-4">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class = "col-sm-8">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class = "col-sm-4">
+                Status
+            </dt>
+            <dd class = "col-sm-8">
+                @if (Model.Approved == true)
+                {
+                    <span class="badge badge-lg badge-dot">
+                        <i class="bg-success"></i>Approved
+                    </span>
+                }
+                @if (Model.Approved == false && Model.Banned == false)
+                {
+                    <span class="badge badge-lg badge-dot">
+                        <i class="bg-warning"></i>Not approved
+                    </span>
+                }
+                @if (Model.Banned == true)
+                {
+                    <span class="badge badge-lg badge-dot">
+                        <i class="bg-danger"></i>Banned
+                    </span>
+                }
+            </dd>            
+        </dl>        
+    </div>
+</div>
