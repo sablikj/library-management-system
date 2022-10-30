@@ -7,19 +7,17 @@ namespace LibraryManagement.Models.Entity
 {
     public class Loan
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]        
         [Required]
-        public string? Id { get; set; }
+        [BsonGuidRepresentation(GuidRepresentation.Standard)]
+        public Guid Id { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Date { get; protected set; }
-
-        [BsonRepresentation(BsonType.ObjectId)]
-        [Required]
-        public string UserId { get; set; }
-
-        [BsonRepresentation(BsonType.ObjectId)]
+               
+        [Required]        
+        public Guid UserId { get; set; }
+                
         [Required]
         public IList<string> LoanItems { get; set; }
     }

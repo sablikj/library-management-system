@@ -1,7 +1,7 @@
-﻿@model LibraryManagement.Models.Entity.User
+﻿@model CustomerViewModel
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,91 +9,94 @@
 
     <div class="bg-white px-4 w-50" style="border-radius: .75rem">        
         <h1 class="pt-2 d-flex justify-content-between align-items-center">
-            User detail
+            User profile
             <span>
-                <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary text-white" asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil"></i></a>
-                <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
+                <!--User can edit profile only if approved-->
+                @if(Model.Customer.Approved == true)
+                {
+                    <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary text-white" asp-controller="Customer" asp-action="Edit" asp-route-id="@Model.Customer.Id"><i class="bi bi-pencil"></i></a>
+                }                                
             </span>            
         </h1>
         <hr />
         <dl class="row" style="width:500px">
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Customer.Id)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Id)
+                @Html.DisplayFor(model => model.Customer.Id)
             </dd>
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Customer.Name)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Name)
+                @Html.DisplayFor(model => model.Customer.Name)
             </dd>
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Surname)
+                @Html.DisplayNameFor(model => model.Customer.Surname)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Surname)
+                @Html.DisplayFor(model => model.Customer.Surname)
             </dd>
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.SSN)
+                @Html.DisplayNameFor(model => model.Customer.SSN)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.SSN)
+                @Html.DisplayFor(model => model.Customer.SSN)
             </dd>
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.City)
+                @Html.DisplayNameFor(model => model.Customer.City)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.City)
+                @Html.DisplayFor(model => model.Customer.City)
             </dd>
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Street)
+                @Html.DisplayNameFor(model => model.Customer.Street)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Street)
+                @Html.DisplayFor(model => model.Customer.Street)
             </dd>
             <dt class = "col-sm-4">
                 House Number
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.HouseNumber)
+                @Html.DisplayFor(model => model.Customer.HouseNumber)
             </dd>
             <dt class = "col-sm-4">
                 Zip Code
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.ZipCode)
+                @Html.DisplayFor(model => model.Customer.ZipCode)
             </dd>
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Username)
+                @Html.DisplayNameFor(model => model.Customer.Username)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Username)
+                @Html.DisplayFor(model => model.Customer.Username)
             </dd>            
             <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.Customer.Email)
             </dt>
             <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Email)
+                @Html.DisplayFor(model => model.Customer.Email)
             </dd>
             <dt class = "col-sm-4">
                 Status
             </dt>
             <dd class = "col-sm-8">
-                @if (Model.Approved == true)
+                @if (Model.Customer.Approved == true)
                 {
                     <span class="badge badge-lg badge-dot">
                         <i class="bg-success"></i>Approved
                     </span>
                 }
-                @if (Model.Approved == false && Model.Banned == false)
+                @if (Model.Customer.Approved == false && Model.Customer.Banned == false)
                 {
                     <span class="badge badge-lg badge-dot">
                         <i class="bg-warning"></i>Not approved
                     </span>
                 }
-                @if (Model.Banned == true)
+                @if (Model.Customer.Banned == true)
                 {
                     <span class="badge badge-lg badge-dot">
                         <i class="bg-danger"></i>Banned

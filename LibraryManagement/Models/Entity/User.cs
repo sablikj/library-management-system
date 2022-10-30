@@ -10,6 +10,7 @@ namespace LibraryManagement.Models.Entity
     public class User
     {
         [BsonId]
+        [Required]
         [BsonGuidRepresentation(GuidRepresentation.Standard)]
         public Guid Id { get; set; }
         [Required]

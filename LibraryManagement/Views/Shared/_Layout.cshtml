@@ -27,19 +27,28 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>                                                 
-                        @if (User.Identity.IsAuthenticated == true && User.IsInRole("Librarian"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
-                            </li>
-                        }                                    
+                        </li>  
+                        @{
+                            if (User.Identity.IsAuthenticated == true && User.IsInRole("Librarian"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
+                                </li>
+                            }
+
+                            if (User.Identity.IsAuthenticated == true && User.IsInRole("Customer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Customer" asp-controller="Customer" asp-action="Index">Profile</a>
+                                </li>                                
+                            }
+                        }                                                           
                     </ul> 
                     @{
-                        @if (User.Identity.IsAuthenticated == false)
+                        if (User.Identity.IsAuthenticated == false)
                         {
                             <ul class="navbar-nav navbar-right">
                                 <li class="nav-item"><a class="nav-link text-dark" asp-area="Security" asp-controller="Account" asp-action="Register"><span class="glyphicon"></span> Sign Up</a></li>

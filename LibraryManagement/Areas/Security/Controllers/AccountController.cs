@@ -52,7 +52,7 @@ namespace LibraryManagement.Areas.Security.Controllers
                         if (roles.Contains("Librarian"))
                         {                            
                             return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
-                        }
+                        }                        
                         return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""), new { area = "" });
                     }                    
                 }
@@ -91,7 +91,7 @@ namespace LibraryManagement.Areas.Security.Controllers
                     Email = registerVM.Email,
                     RentedBooks = registerVM.RentedBooks,
                     Approved = registerVM.Approved,
-                    Banned = registerVM.Banned
+                    Banned = registerVM.Banned                    
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(appUser, registerVM.Password);

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Customer\Data\" />
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Models\" />
   </ItemGroup>
