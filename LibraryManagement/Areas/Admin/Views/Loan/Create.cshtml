@@ -1,0 +1,61 @@
+﻿@model LoanViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
+}
+
+    <div id="logreg-forms" style="border-radius: .75rem">
+        <form asp-action="Create" method="post" class="form-signup bg-white shadow" style="border-radius: .75rem">
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Create a loan</h1>
+            <hr>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="p-1 mb-2 bg-danger text-black">@ViewBag.ErrorMessage</div>
+        }
+
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" class="form-control">
+                @foreach(var item in Model.Users)                
+                {
+                    <option value=@item.Id>@item.Name</option>
+                }
+            </select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LoanItems" class="control-label"></label>            
+            <select asp-for="LoanItems" multiple class="selectpicker" data-live-search="true">
+                @foreach (var item in Model.Books)
+                {
+                    <option value=@item.Id>@item.Name</option>
+                }
+            </select>
+            <span asp-validation-for="LoanItems" class="text-danger"></span>
+        </div>
+        
+        <div class="row">
+            <div class="col p-2 text-center">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts
+    {
+    @{
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");        
+    }
+    }
