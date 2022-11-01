@@ -19,6 +19,6 @@ namespace LibraryManagement.Models.Entity
         public Guid UserId { get; set; }
                 
         [Required]
-        public IList<string> LoanItems { get; set; }
+        public IList<Book> LoanItems { get; set; }
     }
 }

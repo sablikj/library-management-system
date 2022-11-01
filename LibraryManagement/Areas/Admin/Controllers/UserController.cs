@@ -14,19 +14,19 @@ namespace LibraryManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Librarian")]
     public class UserController : Controller
     {
-        private UserManager<ApplicationUser> _userManager;
-        private RoleManager<ApplicationRole> _roleManager;
-        private readonly DatabaseService _dbService;
+        private UserManager<ApplicationUser> userManager;
+        private RoleManager<ApplicationRole> roleManager;
+        private readonly DatabaseService dbService;
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, DatabaseService dbService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _dbService = dbService;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+            this.dbService = dbService;
         }
 
         public IActionResult Index()
         {
-            return View(_dbService.usersCollection.AsQueryable<User>().ToList());
+            return View(dbService.usersCollection.AsQueryable<User>().ToList());
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -36,7 +36,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return NotFound();
             }
             var filter = Builders<User>.Filter.Eq(user => user.Id, id);
-            var user = await _dbService.usersCollection.Find(filter).FirstOrDefaultAsync();
+            var user = await dbService.usersCollection.Find(filter).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
@@ -75,10 +75,10 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     Banned = false
                 };
 
-                IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
+                IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
 
                 // Add role
-                await _userManager.AddToRoleAsync(appUser, "Customer");
+                await userManager.AddToRoleAsync(appUser, "Customer");
 
                 if (result.Succeeded)
                 {
@@ -114,7 +114,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
 
-                IdentityResult result = await _roleManager.CreateAsync(new ApplicationRole() { Name = userRole.RoleName });
+                IdentityResult result = await roleManager.CreateAsync(new ApplicationRole() { Name = userRole.RoleName });
                 if (result.Succeeded)
                 {
                     ViewBag.Message = "Role created successfully.";
@@ -148,7 +148,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return NotFound();
             }
             var filter = Builders<User>.Filter.Eq(user => user.Id, id);
-            var user = await _dbService.usersCollection.Find(filter).FirstOrDefaultAsync();
+            var user = await dbService.usersCollection.Find(filter).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
@@ -162,15 +162,12 @@ namespace LibraryManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(Guid? id, User userEdit)
         {            
             if(id == null || userEdit == null)
-            {
-                Console.WriteLine("ID null");
+            {                
                 return NotFound();
             }
             if (ModelState.IsValid)
-            {
-                Console.WriteLine("filter");
-                var filter = Builders<User>.Filter.Eq(u => u.Id, userEdit.Id);
-                Console.WriteLine("after filter");
+            {                
+                var filter = Builders<User>.Filter.Eq(u => u.Id, userEdit.Id);                
                 var update = Builders<User>.Update
                         .Set(c => c.Name, userEdit.Name)
                         .Set(c => c.Surname, userEdit.Surname)
@@ -180,10 +177,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
                         .Set(c => c.HouseNumber, userEdit.HouseNumber)
                         .Set(c => c.ZipCode, userEdit.ZipCode)
                         .Set(c => c.Email, userEdit.Email);
-                Console.WriteLine("after update");
-                var result = await _dbService.usersCollection.UpdateOneAsync(filter, update);
-                Console.WriteLine("Result");
-                Console.WriteLine(result.ToString());
+                
+                var result = await dbService.usersCollection.UpdateOneAsync(filter, update);                
                 if(result.IsAcknowledged)
                 {
                     return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
@@ -194,7 +189,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     return NotFound();
                 }
             }
-            Console.WriteLine("Model state not valid?");
+            
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             foreach (var error in errors)
             {
@@ -212,7 +207,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             }
 
             var filter = Builders<User>.Filter.Eq(user => user.Id, id);
-            var result = await _dbService.usersCollection.DeleteOneAsync(filter);
+            var result = await dbService.usersCollection.DeleteOneAsync(filter);
 
             if(result.DeletedCount == 1)
             {
@@ -235,7 +230,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 var filter = Builders<User>.Filter.Eq(user => user.Id, id);
 
                 var update = Builders<User>.Update.Set(c => c.Approved, true);
-                var result = await _dbService.usersCollection.UpdateOneAsync(filter, update);
+                var result = await dbService.usersCollection.UpdateOneAsync(filter, update);
 
                 return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
             }
@@ -259,7 +254,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 var update = Builders<User>.Update
                                            .Set(c => c.Banned, true)
                                            .Set(c => c.Approved, false);
-                var result = await _dbService.usersCollection.UpdateOneAsync(filter, update);
+                var result = await dbService.usersCollection.UpdateOneAsync(filter, update);
 
                 return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
             }

@@ -1,0 +1,107 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "User edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+    
+<div id="logreg-forms" style="border-radius: .75rem;">
+    <form asp-action="Edit" method="post" class="form-signup bg-white" style="border-radius: .75rem">
+        <h1 class="mb-3 font-weight-normal d-flex justify-content-between align-items-center"> 
+            Edit user
+            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
+        </h1>
+        <hr>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="p-1 mb-2 bg-danger text-black">@ViewBag.ErrorMessage</div>
+        }
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" readonly />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+        </div>            
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Surname" class="control-label"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SSN" class="control-label"></label>
+            <input asp-for="SSN" class="form-control" />
+            <span asp-validation-for="SSN" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Street" class="control-label"></label>
+                    <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="HouseNumber" class="control-label">House number</label>
+                    <input asp-for="HouseNumber" class="form-control" />
+                    <span asp-validation-for="HouseNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ZipCode" class="control-label">Zip Code</label>
+                    <input asp-for="ZipCode" class="form-control" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col p-2 text-center">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

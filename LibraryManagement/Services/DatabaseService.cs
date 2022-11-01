@@ -28,21 +28,21 @@ namespace LibraryManagement.Services
             usersCollection = database.GetCollection<User>("Users");
             loanCollection = database.GetCollection<Loan>("Loan");            
         }
-
+        
         // CRUD operations
         public async Task<List<Book>> GetAsync() =>
             await bookCollection.Find(_ => true).ToListAsync();
 
-        public async Task<Book?> GetAsync(string id) =>
+        public async Task<Book?> GetAsync(Guid id) =>
             await bookCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
         public async Task CreateAsync(Book newBook) =>
             await bookCollection.InsertOneAsync(newBook);
 
-        public async Task UpdateAsync(string id, Book updatedBook) =>
+        public async Task UpdateAsync(Guid id, Book updatedBook) =>
             await bookCollection.ReplaceOneAsync(x => x.Id == id, updatedBook);
 
-        public async Task RemoveAsync(string id) =>
-            await bookCollection.DeleteOneAsync(x => x.Id == id);
+        public async Task RemoveAsync(Guid id) =>
+            await bookCollection.DeleteOneAsync(x => x.Id == id);        
     }
 }

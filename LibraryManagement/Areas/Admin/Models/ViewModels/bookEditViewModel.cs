@@ -1,12 +1,12 @@
 ﻿using LibraryManagement.Models.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.Models.Entity
+namespace LibraryManagement.Areas.Admin.Models.ViewModels
 {
-    public class Book
+    public class bookEditViewModel
     {
         [BsonId]
         [Required]
@@ -19,7 +19,7 @@ namespace LibraryManagement.Models.Entity
 
         [Required]
         [StringLength(120)]
-        public string Author { get; set; } 
+        public string Author { get; set; }
 
         [Required]
         [StringLength(2999)]
@@ -33,19 +33,7 @@ namespace LibraryManagement.Models.Entity
 
         [Required]
         [StringLength(120)]
-        public string ISBN { get; set; }
-
-        //[ContentType("image")]
-        [FileSize(15_000_000)] // 15 MB max file size
-        [BsonIgnore]
-        public IFormFile Image { get; set; }
-
-        [ValidateNever]
-        public byte[] ImageContent { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string ImageAlt { get; set; }
+        public string ISBN { get; set; }      
 
         [Required]
         public int Quantity { get; set; }

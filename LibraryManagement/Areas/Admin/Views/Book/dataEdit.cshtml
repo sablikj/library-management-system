@@ -1,0 +1,84 @@
+﻿@model bookEditViewModel
+
+@{
+    ViewData["Title"] = "Edit book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+
+    <div id="logreg-forms" style="border-radius: .75rem">
+        <form asp-action="dataEdit" method="post" class="form-signup bg-white shadow" style="border-radius: .75rem">
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Edit book</h1>
+            <hr>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="p-1 mb-2 bg-danger text-black">@ViewBag.ErrorMessage</div>
+        }
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Author" class="control-label"></label>
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ISBN" class="control-label"></label>
+                    <input asp-for="ISBN" class="form-control" />
+                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Pages" class="control-label"></label>
+                    <input asp-for="Pages" class="form-control" />
+                    <span asp-validation-for="Pages" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Year" class="control-label"></label>
+                    <input asp-for="Year" class="form-control" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Quantity" class="control-label"></label>
+            <input asp-for="Quantity" class="form-control" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col p-2 text-center">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
