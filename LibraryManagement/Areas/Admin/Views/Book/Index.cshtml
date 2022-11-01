@@ -8,70 +8,70 @@
     {
     <link rel="stylesheet" href="~/css/index.css" />
 }
-    <div class="container-fluid">
-        <div class="card shadow border-0 mb-7">
-            <h5 class="card-header d-flex justify-content-between align-items-center">
-                Books is library
-                <a class="btn btn-sm btn-outline-primary" asp-controller="Book" asp-action="Create"><i class="bi bi-plus-circle"></i> Add book</a>
-            </h5>
-            <div class="table-responsive">
-                <table class="table table-hover table-nowrap">
-                    <thead class="thead-light">
-                        <tr>
-                            <th></th> <!--Image-->
-                            <th scope="col">Name</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">ISBN</th>
-                            <th scope="col">Pages</th>
-                            <th scope="col">Year</th>
-                            <th scope="col">Quantity</th>                            
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>                                
-                                @{
-                                    var base64 = Convert.ToBase64String(item.ImageContent);
-                                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                                }
-                                <div class="profilepic">                                    
-                                    <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@item.Id">
-                                        <img class="profilepic__image" src="@imgSrc" />
-                                        <div class="profilepic__content">
-                                            <span class="profilepic__icon"><i class="bi bi-pencil"></i></span>
-                                            <span class="profilepic__text">Edit</span>
-                                        </div>                                           
-                                    </a>
-                                </div>                                
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Author)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ISBN)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Pages)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Year)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Quantity)
-                            </td>                            
-                            <td class="text-center">
-                                <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Book" asp-action="dataEdit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
-                                <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Book" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>                                
-                                <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                            </td>
-                        </tr>
-                    }
+<div class="container-fluid">
+    <div class="card shadow border-0 mb-7">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Books is library
+            <a class="btn btn-sm btn-outline-primary" asp-controller="Book" asp-action="Create"><i class="bi bi-plus-circle"></i> Add book</a>
+        </h5>
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th> <!--Image-->
+                        <th scope="col">Name</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">Pages</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Quantity</th>                            
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>                                
+                            @{
+                                var base64 = Convert.ToBase64String(item.ImageContent);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            <div class="profilepic">                                    
+                                <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@item.Id">
+                                    <img class="profilepic__image" src="@imgSrc" />
+                                    <div class="profilepic__content">
+                                        <span class="profilepic__icon"><i class="bi bi-pencil"></i></span>
+                                        <span class="profilepic__text">Edit</span>
+                                    </div>                                           
+                                </a>
+                            </div>                                
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Author)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ISBN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pages)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>                            
+                        <td class="text-center">
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Book" asp-action="dataEdit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Book" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>                                
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>

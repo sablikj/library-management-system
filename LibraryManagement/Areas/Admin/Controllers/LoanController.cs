@@ -20,7 +20,13 @@ namespace LibraryManagement.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            return View(dbService.loanCollection.AsQueryable<Loan>().ToList());
+            CompleteViewModel completeVM = new CompleteViewModel()
+            {
+                Loans = dbService.loanCollection.AsQueryable<Loan>().ToList(),
+                Books = dbService.bookCollection.AsQueryable<Book>().ToList(),
+                Users = dbService.usersCollection.AsQueryable<User>().ToList()
+            };
+            return View(completeVM);
         }
         public IActionResult Create()
         {
@@ -41,8 +47,31 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 {
                     Id = loanVM.Id,
                     UserId = loanVM.UserId,
+                    CreatedOn = DateTime.Now,
+                    Valid = true,
                     LoanItems = loanVM.LoanItems
                 };
+
+                // Book quantity edit
+                foreach(var item in loan.LoanItems)
+                {
+                    var filter = Builders<Book>.Filter.Eq(b => b.Id, item);
+                    Book book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();
+                    
+                    var update = Builders<Book>.Update                            
+                            .Set(b => b.Quantity, book.Quantity - 1);
+
+                    var result = await dbService.bookCollection.UpdateOneAsync(filter, update);
+                    if (result.IsAcknowledged)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        // TODO: Add error view
+                        return NotFound();
+                    }
+                }
 
                 await dbService.loanCollection.InsertOneAsync(loan);
                 ViewBag.Message = "Loan created successfully.";
@@ -69,6 +98,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 Id = loan.Id,                
                 UserId = loan.UserId,
+                CreatedOn = loan.CreatedOn, 
                 LoanItems = loan.LoanItems,
                 Books = dbService.bookCollection.AsQueryable<Book>().ToList(),
                 Users = dbService.usersCollection.AsQueryable<User>().ToList()
@@ -91,7 +121,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 UserId = loanVM.UserId,
                 LoanItems = loanVM.LoanItems               
             };
-
+            
             if (loanEdit == null)
             {
                 return NotFound();
@@ -122,7 +152,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Console.WriteLine(error.ErrorMessage);
                 ViewBag.ErrorMessage = error.ErrorMessage;
             }
-            return View(loanEdit);
+            return NotFound();
         }
 
         public async Task<IActionResult> Delete(Guid? id)
@@ -132,9 +162,35 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var filter = Builders<Loan>.Filter.Eq(book => book.Id, id);
-            var result = await dbService.loanCollection.DeleteOneAsync(filter);
+            // Book quantity edit
+            var filter = Builders<Loan>.Filter.Eq(loan => loan.Id, id);
+            Loan loan = await dbService.loanCollection.Find(filter).FirstOrDefaultAsync();
+            if (loan == null)
+            {
+                return NotFound();
+            }
 
+            foreach (var item in loan.LoanItems)
+            {
+                var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                Book book = await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync();
+
+                var update = Builders<Book>.Update
+                            .Set(b => b.Quantity, book.Quantity + 1);
+
+                var bookResult = await dbService.bookCollection.UpdateOneAsync(bookFilter, update);
+                if (bookResult.IsAcknowledged)
+                {
+                    continue;
+                }
+                else
+                {
+                    // TODO: Add error view
+                    return NotFound();
+                }
+            }
+                        
+            var result = await dbService.loanCollection.DeleteOneAsync(filter);
             if (result.DeletedCount == 1)
             {
                 return RedirectToAction(nameof(LoanController.Index), nameof(LoanController).Replace("Controller", ""), new { area = "Admin" });

@@ -12,11 +12,13 @@ namespace LibraryManagement.Models.Entity
         [BsonGuidRepresentation(GuidRepresentation.Standard)]
         public Guid Id { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime Date { get; protected set; }
+        [BsonRepresentation(BsonType.DateTime)]
+        public DateTime CreatedOn { get; set; }
                
         [Required]        
         public Guid UserId { get; set; }
+
+        public bool Valid { get; set; }
                 
         [Required]
         public IList<Guid> LoanItems { get; set; }

@@ -2,7 +2,7 @@
 
 namespace LibraryManagement.Areas.Admin.Models.ViewModels
 {
-    public class DashboardViewModel
+    public class CompleteViewModel
     {
         public IList<User> Users { get; set; }
         public IList<Loan> Loans { get; set; }

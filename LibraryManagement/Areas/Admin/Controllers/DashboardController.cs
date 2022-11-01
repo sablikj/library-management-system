@@ -22,7 +22,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            DashboardViewModel dashboardViewModel = new DashboardViewModel();
+            CompleteViewModel dashboardViewModel = new CompleteViewModel();
             dashboardViewModel.Books = dbService.bookCollection.AsQueryable<Book>().ToList();
             dashboardViewModel.Users = dbService.usersCollection.AsQueryable<User>().ToList();
             dashboardViewModel.Loans = dbService.loanCollection.AsQueryable<Loan>().ToList();            

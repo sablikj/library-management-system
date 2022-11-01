@@ -1,48 +1,98 @@
-﻿@model IEnumerable<LibraryManagement.Models.Entity.Loan>
+﻿@model CompleteViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/index.css" />
 }
-    </tbody>
-</table>
+<div class="container-fluid">
+    <div class="card shadow border-0 mb-7">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Loan history
+            <a class="btn btn-sm btn-outline-primary" asp-controller="Loan" asp-action="Create"><i class="bi bi-plus-circle"></i> Create loan</a>
+        </h5>
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap">
+                <thead class="thead-light">
+                    <tr>                        
+                        <th scope="col">#</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Created On</th>
+                        <th scope="col">Time Remaining</th>
+                        <th scope="col">Books</th>
+                        <th scope="col">Quantity</th> 
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @{int i = 0;}
+                @foreach (var item in Model.Loans)
+                {
+                    <tr>
+                        <td>
+                            @{i++;}
+                            @i
+                        </td>
+                        <td>
+                            @{
+                                var user = Model.Users.FirstOrDefault(u => u.Id == item.UserId);                                    
+                            }
+                            @user.Username
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                        <td>
+                                @{
+                                    TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(6));
+                                    string time = remaining.Days.ToString().Replace("-", "") + " Days " + remaining.Hours.ToString().Replace("-", "") + " Hours";
+                                }
+                            @time
+                        </td>                              
+                        <td>
+                            @{
+                                string b = "";
+                                foreach (var book in item.LoanItems) {
+                                    if(b != ""){
+                                        b += ", ";
+                                    }
+                                    b += Model.Books.FirstOrDefault(b => b.Id == book).Name;
+                                }
+                            }
+                            @b
+                        </td>
+                            <td>
+                                @if (item.Valid == true)
+                                {
+                                    <span class="badge badge-lg badge-dot">
+                                        <i class="bg-success"></i>Valid
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-lg badge-dot">
+                                        <i class="bg-danger"></i>Expired
+                                    </span>
+                                }                                
+                            </td>
+                        <td class="text-center">
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Loan" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Loan" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Loan" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer border-0 py-5">
+            <!--TODO: Add pagination-->
+            <span class="text-muted text-sm">Showing @Model.Loans.Count() items out of @Model.Loans.Count() results found</span>
+        </div>
+    </div>
+</div>
