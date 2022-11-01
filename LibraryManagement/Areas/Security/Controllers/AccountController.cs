@@ -48,11 +48,12 @@ namespace LibraryManagement.Areas.Security.Controllers
                     if (result.Succeeded)
                     {
                         // Admin redirected to dashboard
+                        HttpContext.Session.SetString("loginVM.Username", loginVM.Username);
                         var roles = await _userManager.GetRolesAsync(appUser);
                         if (roles.Contains("Librarian"))
-                        {                            
+                        {
                             return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
-                        }                        
+                        }
                         return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""), new { area = "" });
                     }                    
                 }
