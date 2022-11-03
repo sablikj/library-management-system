@@ -19,7 +19,7 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">Name</th>
-                            <th scope="col">Surname</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Email</th>
                             <th scope="col">Street</th>
                             <th scope="col">City</th>
@@ -33,10 +33,13 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Name)
+                                @{
+                                    string name = item.Name + " " + item.Surname;
+                                }
+                                @name
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Surname)
+                                @Html.DisplayFor(modelItem => item.Username)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)

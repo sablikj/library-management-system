@@ -7,6 +7,7 @@ using LibraryManagement.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using LibraryManagement.Areas.Admin.Models.ViewModels;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -41,7 +42,50 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+
+            // Retriving Books from db
+            IList<Book> rentedBooks = new List<Book>();
+            foreach (var item in user.RentedBooks)
+            {
+                var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                rentedBooks.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+            }            
+
+            // Getting loan history
+            var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.UserId, id);
+            IList<Loan> loans = await dbService.loanCollection.Find(loanFilter).ToListAsync();
+
+            IList<Book> books = new List<Book>();
+            // Getting books from past loans
+            foreach (var lo in loans)
+            {
+                foreach (var item in lo.LoanItems)
+                {
+                    var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                    books.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+                }
+            }
+
+            UserViewModel userVM = new UserViewModel()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                SSN = user.SSN,
+                City = user.City,
+                Street = user.Street,
+                HouseNumber = user.HouseNumber,
+                ZipCode = user.ZipCode,
+                Username = user.Username,
+                Email = user.Email,
+                RentedBooks = rentedBooks, // Here, rented books are instances of Book class, NOT Guid
+                Approved = user.Approved,
+                Banned = user.Banned,
+                Loans = loans,         
+                Books = books
+            };
+
+            return View(userVM);
         }
 
         public IActionResult Create()

@@ -90,9 +90,9 @@ namespace LibraryManagement.Areas.Security.Controllers
                     ZipCode = registerVM.ZipCode,
                     UserName = registerVM.Username,
                     Email = registerVM.Email,
-                    RentedBooks = registerVM.RentedBooks,
-                    Approved = registerVM.Approved,
-                    Banned = registerVM.Banned                    
+                    RentedBooks = {},
+                    Approved = false,
+                    Banned = false                    
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(appUser, registerVM.Password);

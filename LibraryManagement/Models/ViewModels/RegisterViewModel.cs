@@ -38,11 +38,5 @@ namespace LibraryManagement.Models.ViewModels
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email")]
         public string Email { get; set; }
-
-        public string[]? RentedBooks { get; set; }
-
-        public bool Approved { get; set; }
-
-        public bool Banned { get; set; }
     }
 }

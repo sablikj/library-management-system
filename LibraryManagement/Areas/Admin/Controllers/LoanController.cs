@@ -3,7 +3,9 @@ using LibraryManagement.Models.Entity;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using MongoDB.Driver;
+using NuGet.Packaging;
 using System.Data;
 
 namespace LibraryManagement.Areas.Admin.Controllers
@@ -73,6 +75,24 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     }
                 }
 
+                // Adding books to User account               
+                var userFilter = Builders<User>.Filter.Eq(u => u.Id, loan.UserId);
+                User user = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+                IList<Guid> rentedBooks = user.RentedBooks;
+                rentedBooks.AddRange(loan.LoanItems);
+
+                var userUpdate = Builders<User>.Update
+                            .Set(u => u.RentedBooks, rentedBooks);
+
+                var userResult = await dbService.usersCollection.UpdateOneAsync(userFilter, userUpdate);
+                if (!userResult.IsAcknowledged)
+                {
+                    // TODO: Add error view
+                    return NotFound();
+                }                
+
+                // Add loan to DB
                 await dbService.loanCollection.InsertOneAsync(loan);
                 ViewBag.Message = "Loan created successfully.";
 
@@ -189,7 +209,28 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     return NotFound();
                 }
             }
-                        
+
+            // Removing books from User account               
+            var userFilter = Builders<User>.Filter.Eq(u => u.Id, loan.UserId);
+            User user = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+            IList<Guid> updatedBooks = user.RentedBooks;
+            foreach (var item in loan.LoanItems)
+            {
+                updatedBooks.Remove(item);
+            }            
+
+            var userUpdate = Builders<User>.Update
+                        .Set(u => u.RentedBooks, updatedBooks);
+
+            var userResult = await dbService.usersCollection.UpdateOneAsync(userFilter, userUpdate);
+            if (!userResult.IsAcknowledged)
+            {
+                // TODO: Add error view
+                return NotFound();
+            }
+
+            // Add loan to DB
             var result = await dbService.loanCollection.DeleteOneAsync(filter);
             if (result.DeletedCount == 1)
             {
@@ -199,6 +240,12 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 return ViewBag.ErrorMessage = "Loan Delete Error!";
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReturnBook(Guid id)
+        {
+
         }
     }
 }

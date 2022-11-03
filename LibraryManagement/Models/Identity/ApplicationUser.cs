@@ -28,7 +28,7 @@ namespace LibraryManagement.Models.Identity
         [Required]
         public int ZipCode { get; set; } 
 
-        public string[]? RentedBooks { get; set; }
+        public IList<Guid> RentedBooks { get; set; }
 
         [Required]
         public bool Approved { get; set; }

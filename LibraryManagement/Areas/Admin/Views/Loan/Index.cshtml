@@ -42,7 +42,7 @@
                             @{
                                 var user = Model.Users.FirstOrDefault(u => u.Id == item.UserId);                                    
                             }
-                            @user.Username
+                                <a asp-controller="User" asp-action="Details" asp-route-id="@user.Id">@user.Username</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.CreatedOn)
@@ -66,20 +66,23 @@
                             }
                             @b
                         </td>
-                            <td>
-                                @if (item.Valid == true)
-                                {
-                                    <span class="badge badge-lg badge-dot">
-                                        <i class="bg-success"></i>Valid
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge badge-lg badge-dot">
-                                        <i class="bg-danger"></i>Expired
-                                    </span>
-                                }                                
-                            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LoanItems.Count)
+                        </td>
+                        <td>
+                            @if (item.Valid == true)
+                            {
+                                <span class="badge badge-lg badge-dot">
+                                    <i class="bg-success"></i>Valid
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-lg badge-dot">
+                                    <i class="bg-danger"></i>Expired
+                                </span>
+                            }                                
+                        </td>
                         <td class="text-center">
                             <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Loan" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
                             <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Loan" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>

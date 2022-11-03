@@ -1,13 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
-using MongoDbGenericRepository.Attributes;
+using LibraryManagement.Models.Entity;
 
-namespace LibraryManagement.Models.Entity
+namespace LibraryManagement.Areas.Admin.Models.ViewModels
 {
-    [CollectionName("Users")]
-    [BsonIgnoreExtraElements]
-    public class User
+    public class UserViewModel
     {
         [BsonId]
         [Required]
@@ -24,7 +22,7 @@ namespace LibraryManagement.Models.Entity
 
         [Required]
         public string City { get; set; }
-        
+
         [Required]
         public string Street { get; set; }
 
@@ -36,19 +34,20 @@ namespace LibraryManagement.Models.Entity
 
         [Required]
         [BsonElement("UserName")]
-        public string Username { get; set; }
-        
-        public string? Password { get; set; }
+        public string Username { get; set; }        
 
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email")]
         public string Email { get; set; }
-        
-        public IList<Guid> RentedBooks { get; set; }
+
+        public IList<Book> RentedBooks { get; set; }
 
         [Required]
         public bool Approved { get; set; }
 
         public bool Banned { get; set; }
+
+        public IList<Loan> Loans { get; set; }
+        public IList<Book> Books { get; set; }
     }
 }
