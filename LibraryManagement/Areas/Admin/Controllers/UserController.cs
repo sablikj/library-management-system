@@ -343,9 +343,9 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            book.Quantity += 1;
+            book.Available += 1;
             var bookUpdate = Builders<Book>.Update
-                                .Set(b => b.Quantity, book.Quantity);
+                                .Set(b => b.Available, book.Available);
             var bookResult = await dbService.bookCollection.UpdateOneAsync(bookFilter, bookUpdate);
             if (!bookResult.IsAcknowledged)
             {

@@ -35,7 +35,7 @@
             <select asp-for="LoanItems" multiple class="form-control selectpicker w-100" data-live-search="true" style="color: black; background-color: white;">
                 @foreach (var item in Model.Books)
                 {
-                    if(item.Quantity < 1){
+                    if(item.Available < 1){
                         continue;
                     }
                     <option value=@item.Id style="color: black; background-color: white;">@item.Name</option>

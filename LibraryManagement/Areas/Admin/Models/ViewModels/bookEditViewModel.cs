@@ -33,9 +33,10 @@ namespace LibraryManagement.Areas.Admin.Models.ViewModels
 
         [Required]
         [StringLength(120)]
-        public string ISBN { get; set; }      
+        public string ISBN { get; set; }
 
         [Required]
         public int Quantity { get; set; }
+        public int Available { get; set; }
     }
 }

@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="card shadow border-0 mb-7">
         <h5 class="card-header d-flex justify-content-between align-items-center">
-            Books is library
+            Books in library
             <a class="btn btn-sm btn-outline-primary" asp-controller="Book" asp-action="Create"><i class="bi bi-plus-circle"></i> Add book</a>
         </h5>
         <div class="table-responsive">
@@ -24,7 +24,8 @@
                         <th scope="col">ISBN</th>
                         <th scope="col">Pages</th>
                         <th scope="col">Year</th>
-                        <th scope="col">Quantity</th>                            
+                        <th scope="col">Quantity</th>  
+                        <th scope="col">Available</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -64,11 +65,22 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Available)
                         </td>                            
                         <td class="text-center">
                             <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Book" asp-action="dataEdit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
-                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Book" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>                                
-                            <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Book" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>     
+                            @if(item.Available == item.Quantity)
+                            {
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            }
+                            else
+                            {                                
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-danger disabled" ><i class="bi bi-trash"></i></a>
+                            }
+                            
                         </td>
                     </tr>
                 }

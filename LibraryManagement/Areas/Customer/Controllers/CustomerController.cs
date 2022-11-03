@@ -1,7 +1,6 @@
 ﻿
 using LibraryManagement.Areas.Admin.Controllers;
 using LibraryManagement.Areas.Admin.Models.ViewModels;
-using LibraryManagement.Areas.Customer.Models.ViewModels;
 using LibraryManagement.Models.Entity;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -177,9 +176,9 @@ namespace LibraryManagement.Areas.Customer.Controllers
                 return NotFound();
             }
 
-            book.Quantity += 1;
+            book.Available += 1;
             var bookUpdate = Builders<Book>.Update
-                                .Set(b => b.Quantity, book.Quantity);
+                                .Set(b => b.Available, book.Available);
             var bookResult = await dbService.bookCollection.UpdateOneAsync(bookFilter, bookUpdate);
             if (!bookResult.IsAcknowledged)
             {

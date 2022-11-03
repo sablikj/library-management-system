@@ -49,5 +49,6 @@ namespace LibraryManagement.Models.Entity
 
         [Required]
         public int Quantity { get; set; }
+        public int Available { get; set; }
     }
 }

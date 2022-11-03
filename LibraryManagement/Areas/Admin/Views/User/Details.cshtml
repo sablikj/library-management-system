@@ -228,7 +228,7 @@
     <!--Loan history-->
     <div class="card shadow border-0 mb-7">
         <h5 class="card-header d-flex justify-content-between align-items-center">
-            Past loans
+            Loan history
         </h5>
         <div class="table-responsive">
             <table class="table table-hover table-nowrap">
@@ -246,11 +246,7 @@
                         int o = 0;
                     }
                     @foreach (var item in Model.Loans)
-                    {
-                        if (item.Valid == false)
-                        {
-                            continue;
-                        }
+                    {                        
                         <tr>
                             <td>
                                 @{

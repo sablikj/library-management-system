@@ -56,11 +56,23 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Quantity" class="control-label"></label>
-            <input asp-for="Quantity" class="form-control" />
-            <span asp-validation-for="Quantity" class="text-danger"></span>
-        </div>
+        @if(Model.Available > 0)
+        {   // Admin can remove books only if some are available
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" min="@(Model.Quantity - Model.Available)" max="50" class="form-control" />                
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" min="@Model.Quantity" max="50" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+        }
+        
         <div class="form-group">
             <label asp-for="Description" class="control-label"></label>
             <textarea asp-for="Description" class="form-control"></textarea>

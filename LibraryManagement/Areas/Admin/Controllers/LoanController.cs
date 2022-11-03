@@ -61,7 +61,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     Book book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();
                     
                     var update = Builders<Book>.Update                            
-                            .Set(b => b.Quantity, book.Quantity - 1);
+                            .Set(b => b.Available, book.Available - 1);
 
                     var result = await dbService.bookCollection.UpdateOneAsync(filter, update);
                     if (result.IsAcknowledged)
@@ -196,7 +196,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Book book = await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync();
 
                 var update = Builders<Book>.Update
-                            .Set(b => b.Quantity, book.Quantity + 1);
+                            .Set(b => b.Available, book.Available + 1);
 
                 var bookResult = await dbService.bookCollection.UpdateOneAsync(bookFilter, update);
                 if (bookResult.IsAcknowledged)

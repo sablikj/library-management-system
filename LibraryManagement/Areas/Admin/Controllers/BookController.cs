@@ -34,6 +34,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
         {
             if(book != null)
             {
+                book.Available = book.Quantity;
+
                 if(Image != null && Image.Length > 0)
                 {
                     using (var target = new MemoryStream())
@@ -88,6 +90,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Pages = book.Pages,
                 Year = book.Year,
                 ISBN = book.ISBN,
+                Available = book.Available,
                 Quantity = book.Quantity
             };
 
@@ -110,8 +113,9 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Description = bookEditVM.Description,
                 Pages = bookEditVM.Pages,
                 Year = bookEditVM.Year,
-                ISBN = bookEditVM.ISBN,
-                Quantity = bookEditVM.Quantity
+                ISBN = bookEditVM.ISBN,       
+                Available = bookEditVM.Available,
+                Quantity = bookEditVM.Quantity                
             };
 
             if (bookEdit == null)
@@ -122,14 +126,30 @@ namespace LibraryManagement.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {                
                 var filter = Builders<Book>.Filter.Eq(book => book.Id, bookEdit.Id);
+                // get data of original book
+                Book book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();
+                // update available books
+                
+                // Quantity decrease
+                if(book.Quantity > bookEdit.Quantity)
+                {
+                    book.Available = book.Available - (book.Quantity - bookEdit.Quantity);
+                }
+                // Quantity increase
+                else if(book.Quantity < bookEdit.Quantity)
+                {
+                    book.Available = book.Available + (bookEdit.Quantity - book.Quantity);
+                }
+                
                 var update = Builders<Book>.Update
                         .Set(b => b.Name, bookEdit.Name)
                         .Set(b => b.Author, bookEdit.Author)
                         .Set(b => b.Description, bookEdit.Description)
                         .Set(b => b.Pages, bookEdit.Pages)
                         .Set(b => b.Year, bookEdit.Year)
-                        .Set(b => b.ISBN, bookEdit.ISBN)                        
-                        .Set(b => b.Quantity, bookEdit.Quantity);
+                        .Set(b => b.ISBN, bookEdit.ISBN)
+                        .Set(b => b.Quantity, bookEdit.Quantity)
+                        .Set(b => b.Available, book.Available);
 
                 var result = await dbService.bookCollection.UpdateOneAsync(filter, update);
                 if (result.IsAcknowledged)
