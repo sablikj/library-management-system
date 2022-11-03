@@ -1,4 +1,4 @@
-﻿@model UserViewModel
+﻿@model UserProfileViewModel
 
 @{
     ViewData["Title"] = "Detail";
@@ -139,7 +139,7 @@
                                         @Html.DisplayFor(modelItem => item.Author)
                                     </td>
                                     <td class="text-center">
-                                        <a style="margin-bottom:5px;" class="btn btn-sm btn-success" asp-controller="Loan" asp-action="ReturnBook" asp-route-id="@item.Id"><i class="bi bi-journal-check"></i></a>
+                                        <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-area="Admin" asp-controller="User" asp-action="RemoveBook" asp-route-userId="@Model.Id" asp-route-bookId="@item.Id"><i class="bi bi-journal-x"></i></a>
                                     </td>
                                 </tr>
                             }

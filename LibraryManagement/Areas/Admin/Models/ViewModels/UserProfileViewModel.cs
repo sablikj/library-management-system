@@ -5,7 +5,7 @@ using LibraryManagement.Models.Entity;
 
 namespace LibraryManagement.Areas.Admin.Models.ViewModels
 {
-    public class UserViewModel
+    public class UserProfileViewModel
     {
         [BsonId]
         [Required]

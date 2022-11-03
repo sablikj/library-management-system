@@ -66,7 +66,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 }
             }
 
-            UserViewModel userVM = new UserViewModel()
+            UserProfileViewModel userVM = new UserProfileViewModel()
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -306,6 +306,58 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 // TODO: add error view
                 return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> RemoveBook(Guid userId, Guid bookId)
+        {
+            if (userId == Guid.Empty && bookId == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            // Remove book from user 
+            var userFilter = Builders<User>.Filter.Eq(user => user.Id, userId);
+            User user = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            user.RentedBooks.Remove(bookId);
+            var update = Builders<User>.Update
+                                .Set(u => u.RentedBooks, user.RentedBooks);
+
+            var userResult = await dbService.usersCollection.UpdateOneAsync(userFilter, update);
+            if (!userResult.IsAcknowledged)
+            {
+                // TODO: Add error view
+                return NotFound();
+            }
+
+            // Edit book quantity
+            var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, bookId);
+            Book book = await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync();
+            if(book == null)
+            {
+                return NotFound();
+            }
+
+            book.Quantity += 1;
+            var bookUpdate = Builders<Book>.Update
+                                .Set(b => b.Quantity, book.Quantity);
+            var bookResult = await dbService.bookCollection.UpdateOneAsync(bookFilter, bookUpdate);
+            if (!bookResult.IsAcknowledged)
+            {
+                return NotFound();
+            }
+            if (userResult.ModifiedCount == 1 && bookResult.ModifiedCount == 1)
+            {                
+                return RedirectToAction(nameof(UserController.Details), nameof(UserController).Replace("Controller", ""), new { area = "Admin", id = user.Id });
+            }
+            else
+            {
+                return ViewBag.ErrorMessage = "Book remove error!";
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿
+using LibraryManagement.Areas.Admin.Controllers;
+using LibraryManagement.Areas.Admin.Models.ViewModels;
 using LibraryManagement.Areas.Customer.Models.ViewModels;
 using LibraryManagement.Models.Entity;
 using LibraryManagement.Services;
@@ -23,27 +25,63 @@ namespace LibraryManagement.Areas.Customer.Controllers
         }
         
         public async Task<IActionResult> Index()
-        {
-            CustomerViewModel customerVM = new CustomerViewModel();
+        {            
             Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (customerId == Guid.Empty)
             {
                 return NotFound();
             }
-            var userFilter = Builders<User>.Filter.Eq(user => user.Id, customerId);
-            var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.UserId, customerId);            
+            var userFilter = Builders<User>.Filter.Eq(user => user.Id, customerId);                        
             
             // Get current user            
-            customerVM.Customer = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
-            if (customerVM.Customer == null)
+            User customer = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            // Get customers loans
-            customerVM.Loans = await dbService.loanCollection.Find(loanFilter).ToListAsync();
+            // Retriving Books from db
+            IList<Book> rentedBooks = new List<Book>();
+            foreach (var item in customer.RentedBooks)
+            {
+                var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                rentedBooks.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+            }            
 
+            // Getting loan history
+            var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.UserId, customer.Id);
+            IList<Loan> loans = await dbService.loanCollection.Find(loanFilter).ToListAsync();
+
+            IList<Book> books = new List<Book>();
+            // Getting books from past loans
+            foreach (var lo in loans)
+            {
+                foreach (var item in lo.LoanItems)
+                {
+                    var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                    books.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+                }
+            }
+
+            UserProfileViewModel customerVM = new UserProfileViewModel()
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Surname = customer.Surname,
+                SSN = customer.SSN,
+                City = customer.City,
+                Street = customer.Street,
+                HouseNumber = customer.HouseNumber,
+                ZipCode = customer.ZipCode,
+                Username = customer.Username,
+                Email = customer.Email,
+                RentedBooks = rentedBooks, // Here, rented books are instances of Book class, NOT Guid
+                Approved = customer.Approved,
+                Banned = customer.Banned,
+                Loans = loans,
+                Books = books
+            };       
             return View(customerVM);
         }
 
@@ -103,6 +141,58 @@ namespace LibraryManagement.Areas.Customer.Controllers
                 ViewBag.ErrorMessage = error.ErrorMessage;
             }
             return View(userEdit);
+        }
+
+        public async Task<IActionResult> ReturnBook(Guid userId, Guid bookId)
+        {
+            if (userId == Guid.Empty && bookId == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            // Remove book from user 
+            var userFilter = Builders<User>.Filter.Eq(user => user.Id, userId);
+            User user = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.RentedBooks.Remove(bookId);
+            var update = Builders<User>.Update
+                                .Set(u => u.RentedBooks, user.RentedBooks);
+
+            var userResult = await dbService.usersCollection.UpdateOneAsync(userFilter, update);
+            if (!userResult.IsAcknowledged)
+            {
+                // TODO: Add error view
+                return NotFound();
+            }
+
+            // Edit book quantity
+            var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, bookId);
+            Book book = await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync();
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            book.Quantity += 1;
+            var bookUpdate = Builders<Book>.Update
+                                .Set(b => b.Quantity, book.Quantity);
+            var bookResult = await dbService.bookCollection.UpdateOneAsync(bookFilter, bookUpdate);
+            if (!bookResult.IsAcknowledged)
+            {
+                return NotFound();
+            }
+            if (userResult.ModifiedCount == 1 && bookResult.ModifiedCount == 1)
+            {
+                return RedirectToAction(nameof(CustomerController.Index), nameof(CustomerController).Replace("Controller", ""), new { area = "Customer", id = user.Id });
+            }
+            else
+            {
+                return ViewBag.ErrorMessage = "Book remove error!";
+            }
         }
     }
 }

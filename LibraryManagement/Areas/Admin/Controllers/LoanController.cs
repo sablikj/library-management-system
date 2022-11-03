@@ -240,12 +240,6 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 return ViewBag.ErrorMessage = "Loan Delete Error!";
             }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ReturnBook(Guid id)
-        {
-
-        }
+        }              
     }
 }

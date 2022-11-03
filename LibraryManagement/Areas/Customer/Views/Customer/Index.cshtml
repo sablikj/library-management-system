@@ -1,110 +1,282 @@
-﻿@model CustomerViewModel
+﻿@model UserProfileViewModel
 
 @{
     ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container d-flex justify-content-center" id="logreg-forms" style="border-radius: .75rem">   
+@section Styles
+    {
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+}
 
-    <div class="bg-white px-4 w-50" style="border-radius: .75rem">        
-        <h1 class="pt-2 d-flex justify-content-between align-items-center">
-            User profile
-            <span>
-                <!--User can edit profile only if approved-->
-                @if(Model.Customer.Approved == true)
-                {
-                    <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary text-white" asp-controller="Customer" asp-action="Edit" asp-route-id="@Model.Customer.Id"><i class="bi bi-pencil"></i></a>
-                }                                
-            </span>            
-        </h1>
-        <hr />
-        <dl class="row" style="width:500px">
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.Id)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.Id)
-            </dd>
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.Name)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.Name)
-            </dd>
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.Surname)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.Surname)
-            </dd>
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.SSN)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.SSN)
-            </dd>
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.City)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.City)
-            </dd>
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.Street)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.Street)
-            </dd>
-            <dt class = "col-sm-4">
-                House Number
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.HouseNumber)
-            </dd>
-            <dt class = "col-sm-4">
-                Zip Code
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.ZipCode)
-            </dd>
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.Username)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.Username)
-            </dd>            
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Customer.Email)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Customer.Email)
-            </dd>
-            <dt class = "col-sm-4">
-                Status
-            </dt>
-            <dd class = "col-sm-8">
-                @if (Model.Customer.Approved == true)
-                {
-                    <span class="badge badge-lg badge-dot">
-                        <i class="bg-success"></i>Approved
+    <div class="container-fluid" id="logreg-forms" style="border-radius: .75rem">
+        <div class="row">
+            <!--User Detail-->
+            <div class="bg-white col mx-4 px-4 mb-7 w-50 shadow" style="border-radius: .75rem; max-height:40%;">
+                <h1 class="pt-2 d-flex justify-content-between align-items-center">
+                    Profile
+                    <span>                        
+                        <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white" asp-controller="Home" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
                     </span>
-                }
-                @if (Model.Customer.Approved == false && Model.Customer.Banned == false)
-                {
-                    <span class="badge badge-lg badge-dot">
-                        <i class="bg-warning"></i>Not approved
-                    </span>
-                }
-                @if (Model.Customer.Banned == true)
-                {
-                    <span class="badge badge-lg badge-dot">
-                        <i class="bg-danger"></i>Banned
-                    </span>
-                }
-            </dd>            
-        </dl>        
+                </h1>
+                <hr />
+                <dl class="row w-100">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Surname)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Surname)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.SSN)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.SSN)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.City)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.City)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Street)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Street)
+                    </dd>
+                    <dt class="col-sm-4">
+                        House Number
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.HouseNumber)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Zip Code
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.ZipCode)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Username)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Username)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Status
+                    </dt>
+                    <dd class="col-sm-8">
+                    @if (Model.Approved == true)
+                    {
+                        <span class="badge badge-lg badge-dot">
+                            <i class="bg-success"></i>Approved
+                        </span>
+                    }
+                    @if (Model.Approved == false && Model.Banned == false)
+                    {
+                        <span class="badge badge-lg badge-dot">
+                            <i class="bg-warning"></i>Not approved
+                        </span>
+                    }
+                    @if (Model.Banned == true)
+                    {
+                        <span class="badge badge-lg badge-dot">
+                            <i class="bg-danger"></i>Banned
+                        </span>
+                    }
+                </dd>
+            </dl>
+        </div>
+
+        <!--Rented books-->
+        <!--TODO: Change px values to something else-->
+        <div class="col bg-white w-50 px-0 mb-7" style="border-radius: .75rem; max-height:450px;">
+            <h1 class="row bg-white pt-2 mx-2 px-4 d-flex justify-content-between align-items-center" style="border-radius: .75rem;">
+                Rented Books
+            </h1>
+            <hr />
+            <div class="bg-white col w-100 shadow overflow-auto" data-simplebar style="border-radius: .75rem; max-height: 360px;">
+                <div class="table-responsive w-100">
+                    <table class="table table-hover table-responsive">
+                        <tbody>
+                            @foreach (var item in Model.RentedBooks)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                            var base64 = Convert.ToBase64String(item.ImageContent);
+                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        }
+                                        <div class="profilepic">                                            
+                                            <img class="profilepic__image" src="@imgSrc" />                                                                                       
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Author)
+                                    </td>
+                                    <td class="text-center">
+                                        <a style="margin-bottom:5px;" class="btn btn-sm btn-success" asp-area="Customer" asp-controller="Customer" asp-action="ReturnBook" asp-route-userId="@Model.Id" asp-route-bookId="@item.Id"><i class="bi bi-journal-check"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <!--TODO: Add active loans-->
-    <!--TODO: Add loan history-->
+    <!--Active loans-->
+    <div class="card shadow border-0 mb-7">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Active Loans
+        </h5>
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Created On</th>
+                        <th scope="col">Time Remaining</th>
+                        <th scope="col">Books</th>
+                        <th scope="col">Quantity</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var item in Model.Loans)
+                    {
+                        if (item.Valid == false)
+                        {
+                            continue;
+                        }
+                        <tr>
+                            <td>
+                                @{
+                                    i++;
+                                }
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td>
+                                @{
+                                    TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(6));
+                                    string time = remaining.Days.ToString().Replace("-", "") + " Days " + remaining.Hours.ToString().Replace("-", "") + " Hours";
+                                }
+                                @time
+                            </td>
+                            <td>
+                                @{
+                                    string b = "";
+                                    foreach (var book in Model.Books)
+                                    {
+                                        if (b != "")
+                                        {
+                                            b += ", ";
+                                        }
+                                        b += book.Name;
+                                    }
+                                }
+                                @b
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoanItems.Count)
+                            </td>                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer border-0 py-5">
+            <!--TODO: Add pagination-->
+            <span class="text-muted text-sm">Showing @Model.Loans.Count() items out of @Model.Loans.Count() results found</span>
+        </div>
+    </div>
+    <!--Loan history-->
+    <div class="card shadow border-0 mb-7">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Past loans
+        </h5>
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Created On</th>
+                        <th scope="col">Books</th>
+                        <th scope="col">Quantity</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int o = 0;
+                    }
+                    @foreach (var item in Model.Loans)
+                    {
+                        if (item.Valid == false)
+                        {
+                            continue;
+                        }
+                        <tr>
+                            <td>
+                                @{
+                                    o++;
+                                }
+                                @o
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td>
+                                @{
+                                    string b = "";
+                                    foreach (var book in Model.Books)
+                                    {
+                                        if (b != "")
+                                        {
+                                            b += ", ";
+                                        }
+                                        b += book.Name;
+                                    }
+                                }
+                                @b
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoanItems.Count)
+                            </td>                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer border-0 py-5">
+            <!--TODO: Add pagination-->
+            <span class="text-muted text-sm">Showing @Model.Loans.Count() items out of @Model.Loans.Count() results found</span>
+        </div>
+    </div>
 </div>
+
+@section Scripts
+    {
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+}

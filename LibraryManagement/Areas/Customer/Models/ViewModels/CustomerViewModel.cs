@@ -6,5 +6,9 @@ namespace LibraryManagement.Areas.Customer.Models.ViewModels
     {
         public User Customer { get; set; }
         public IList<Loan> Loans { get; set; }
+
+        public IList<Book> RentedBooks { get; set; }      
+
+        public IList<Book> Books { get; set; }
     }
 }
