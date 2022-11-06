@@ -9,77 +9,51 @@
     <link rel="stylesheet" href="~/css/index.css" />
 }
 
-<div class="container-fluid">
-    <!-- Card stats -->
-    <div class="row g-6 mb-6">
-        <!--Total Users-->
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Users</span>
-                            <span class="h3 font-bold mb-0">@Model.Users.Count</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
-                                <i class="bi bi-people"></i>
+    <div class="container-fluid">
+        <!-- Card stats -->
+        <div class="row g-6 mb-14">
+            <!--Total Users-->
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Users</span>
+                                <span class="h3 font-bold mb-0">@Model.Users.Count</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
+                                    <i class="bi bi-people"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-success text-success me-2">
-                            <i class="bi bi-arrow-up me-1"></i>13%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since last month</span>
-                    </div>
                 </div>
             </div>
-        </div>
-        <!--Active Loans-->
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Active Loans</span>
-                            <span class="h3 font-bold mb-0">@Model.Loans.Count</span>
+            <!--Active Loans-->
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <span class="h6 font-semibold text-muted text-sm d-block mb-2">Active Loans</span>
+                                @{
+                                int active = 0;
+                                foreach (var item in Model.Loans)
+                                {
+                                    if (item.Valid)
+                                    {
+                                        active++;
+                                    }
+                                }
+                            }
+                            <span class="h3 font-bold mb-0">@active</span>
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
                                 <i class="bi bi-bookmarks"></i>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-success text-success me-2">
-                            <i class="bi bi-arrow-up me-1"></i>30%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since last month</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Available Books-->
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Available Books</span>
-                            <span class="h3 font-bold mb-0">@Model.Books.Count</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-success text-white text-lg rounded-circle">
-                                <i class="bi bi-book"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                            <i class="bi bi-arrow-down me-1"></i>-5%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since last month</span>
                     </div>
                 </div>
             </div>
@@ -99,11 +73,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 mb-0 text-sm">
-                        <span class="badge badge-pill bg-soft-danger text-danger me-2">
-                            <i class="bi bi-arrow-down me-1"></i>-5%
-                        </span>
-                        <span class="text-nowrap text-xs text-muted">Since last month</span>
+                </div>
+            </div>
+        </div>
+        <!--Books out of stock-->
+        <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Books out of stock</span>
+                            @{
+                                int stock = 0;
+                                foreach (var item in Model.Books)
+                                {
+                                    if (item.Available == 0)
+                                    {
+                                        stock++;
+                                    }
+                                }
+                            }
+                            <span class="h3 font-bold mb-0">@stock</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-danger text-white text-lg rounded-circle">
+                                <i class="bi bi-book"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,7 +137,7 @@
                                         @{
                                             string name = item.Name + " " + item.Surname;
                                         }
-                                        @name                                        
+                                        @name
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Username)
@@ -193,8 +189,176 @@
                 <span class="text-muted text-sm">Showing 10 items out of 250 results found</span>
             </div>
         </div>
-    }      
-    <!--TODO: Add active loans-->
-    <!--TODO: Add books out of stock-->
-    <!--Add books out of stock as an stats card?-->
+    }
+    <!--Active loans-->
+    @if (active > 0)
+    {
+        <div class="card shadow border-0 mb-7">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                Active Loans
+            </h5>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Created On</th>
+                            <th scope="col">Time Remaining</th>
+                            <th scope="col">Books</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                        }
+                        @foreach (var item in Model.Loans)
+                        {
+                            if (item.Valid == false)
+                            {
+                                continue;
+                            }
+                            <tr>
+                                <td>
+                                    @{
+                                        i++;
+                                    }
+                                    @i
+                                </td>
+                                <td>
+                                    @{
+                                        var user = Model.Users.FirstOrDefault(u => u.Id == item.UserId);
+                                    }
+                                    <a asp-controller="User" asp-action="Details" asp-route-id="@user.Id">@user.Username</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                                </td>
+                                <td>
+                                    @{
+                                        TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(6));
+                                        string time = remaining.Days.ToString().Replace("-", "") + " Days " + remaining.Hours.ToString().Replace("-", "") + " Hours";
+                                    }
+                                    @time
+                                </td>
+                                <td>
+                                    @{
+                                        string b = "";
+                                        foreach (var book in Model.Books)
+                                        {
+                                            if (b != "")
+                                            {
+                                                b += ", ";
+                                            }
+                                            b += book.Name;
+                                        }
+                                    }
+                                    @b
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LoanItems.Count)
+                                </td>
+                                <td class="text-center">
+                                    <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Loan" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                                    <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Loan" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                                    <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Loan" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer border-0 py-5">
+                <!--TODO: Add pagination-->
+                <span class="text-muted text-sm">Showing @active items out of @active results found</span>
+            </div>
+        </div>
+    }
+    <!--Books out of stock-->
+    @if (stock > 0)
+    {
+        <div class="card shadow border-0 my-7">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                Books out of stock
+            </h5>
+            <div class="table-responsive">
+                <table class="table table-hover table-nowrap">
+                    <thead class="thead-light">
+                        <tr>
+                            <th></th> <!--Image-->
+                            <th scope="col">Name</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">ISBN</th>
+                            <th scope="col">Pages</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Quantity</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Books)
+                        {
+                            if (item.Available == 0)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                            var base64 = Convert.ToBase64String(item.ImageContent);
+                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        }
+                                        <div class="profilepic">
+                                            <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@item.Id">
+                                                <img class="profilepic__image" src="@imgSrc" />
+                                                <div class="profilepic__content">
+                                                    <span class="profilepic__icon"><i class="bi bi-pencil"></i></span>
+                                                    <span class="profilepic__text">Edit</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Author)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ISBN)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Pages)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Year)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quantity)
+                                    </td>
+                                    <td class="text-center">
+                                        <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary" asp-controller="Book" asp-action="dataEdit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i></a>
+                                        <a style="margin-bottom:5px;" class="btn btn-sm btn-primary" asp-controller="Book" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info"></i></a>
+                                        @if (item.Available == item.Quantity)
+                                        {
+                                            <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a style="margin-bottom:5px;" class="btn btn-sm btn-danger disabled"><i class="bi bi-trash"></i></a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer border-0 py-5">
+                <!--TODO: Add pagination-->
+                <span class="text-muted text-sm">Showing @stock items out of @stock results found</span>
+            </div>
+        </div>
+    }
 </div>
