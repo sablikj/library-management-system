@@ -9,6 +9,7 @@ using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using LibraryManagement.Areas.Admin.Models.ViewModels;
 using System.ComponentModel;
+using MongoDbGenericRepository.Utils;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -26,9 +27,10 @@ namespace LibraryManagement.Areas.Admin.Controllers
             this.dbService = dbService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(UserIndexViewModel userIndexVM)
         {
-            return View(dbService.usersCollection.AsQueryable<User>().ToList());
+            userIndexVM.Users = dbService.usersCollection.AsQueryable<User>().ToList();
+            return View(userIndexVM);
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -360,6 +362,60 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 return ViewBag.ErrorMessage = "Book remove error!";
             }
+        }
+
+        // TODO: Rework SEARCH function (to loop)
+        public async Task<IActionResult> Search(UserIndexViewModel userIndexVM)
+        {
+            if (userIndexVM == null)
+            {
+                return NotFound();
+            }
+            
+            var builder = Builders<User>.Filter;
+            FilterDefinition<User> filterName = builder.Empty;
+            FilterDefinition<User> filterSurname = builder.Empty;
+            FilterDefinition<User> filterStreet = builder.Empty;
+            FilterDefinition<User> filterCity = builder.Empty;
+            FilterDefinition<User> filterZip = builder.Empty;
+            FilterDefinition<User> filterSSN = builder.Empty;                
+
+            if (userIndexVM.SearchName != null)
+            {
+                filterName = builder.Regex(u => u.Name, new BsonRegularExpression(userIndexVM.SearchName.Pascalize()));
+            }
+            else if (userIndexVM.SearchSurname != null)
+            {
+                filterSurname = builder.Regex(u => u.Surname, new BsonRegularExpression(userIndexVM.SearchSurname.Pascalize()));
+            }
+            else if (userIndexVM.SearchStreet != null)
+            {
+                filterStreet = builder.Regex(u => u.Street, new BsonRegularExpression(userIndexVM.SearchStreet.Pascalize()));
+            }
+            else if (userIndexVM.SearchCity != null)
+            {
+                filterCity = builder.Regex(u => u.City, new BsonRegularExpression(userIndexVM.SearchCity.Pascalize()));
+            }
+            else if (userIndexVM.SearchZip != null)
+            {
+                filterZip = builder.Eq(b => b.ZipCode, userIndexVM.SearchZip);
+            }
+            else if (userIndexVM.SearchSSN != null)
+            {
+                filterSSN = builder.Eq(b => b.SSN, userIndexVM.SearchSSN);
+            }
+
+            var filter = builder.And(new[] { filterName, filterSurname, filterCity, filterStreet, filterZip, filterSSN });
+            List<User> users = new List<User>();
+            users = await dbService.usersCollection.Find(filter).ToListAsync();
+
+            if (users != null)
+            {
+                userIndexVM.Users = users;
+                return View("Index", userIndexVM);
+            }
+            
+            return NotFound();
         }
     }
 }

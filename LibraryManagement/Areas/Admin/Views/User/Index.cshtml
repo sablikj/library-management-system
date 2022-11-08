@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LibraryManagement.Models.Entity.User>
+﻿@model UserIndexViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +9,44 @@
     <link rel="stylesheet" href="~/css/index.css" />
 }
     <div class="container-fluid">
-        <div class="card shadow border-0 mb-7">
+        <!--Searchbar-->
+        <form asp-action="Search" method="get" class="card shadow border-0 mx-auto w-50" style="border-radius: .75rem">
+            <div class="row my-2 d-flex justify-content-center align-items-center">
+                <div class="col-md-3">
+                    <input asp-for="SearchName" type="text" class="form-control" placeholder="Karel">
+                    <span asp-validation-for="SearchName" class="text-danger"></span>                    
+                </div>
+                <div class="col-md-3">
+                    <input asp-for="SearchSurname" type="text" class="form-control" placeholder="Polák">
+                    <span asp-validation-for="SearchSurname" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-tertiary btn-block"><i class="bi bi-search"></i></button>
+                    <a class="btn btn-block btn-secondary mx-2" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="advanced">
+                        <i class="bi bi-filter"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row w-75 ms-18">
+                <div class="collapse" id="collapseExample">
+                    <div class="row py-2">
+                        <div class="col-md-6">
+                            <input asp-for="SearchStreet" type="text" placeholder="Dlouhá" class="form-control w-100 mb-2">
+                            <span asp-validation-for="SearchStreet" class="text-danger"></span>
+                            <input asp-for="SearchZip" type="number" class="form-control w-100" placeholder="760 01">
+                            <span asp-validation-for="SearchZip" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input asp-for="SearchCity" type="text" class="form-control w-100 mb-2" placeholder="Zlín">
+                            <span asp-validation-for="SearchCity" class="text-danger"></span>                            
+                            <input asp-for="SearchSSN" type="number" class="form-control w-100" placeholder="12345678910">
+                            <span asp-validation-for="SearchSSN" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="card shadow border-0 my-7">
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 Registered Users
                 <a class="btn btn-sm btn-outline-primary" asp-controller="User" asp-action="Create"><i class="bi bi-plus-circle"></i> Add user</a>
@@ -29,7 +66,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Users)
                     {
                         <tr>
                             <td>
@@ -86,7 +123,17 @@
         </div>
         <div class="card-footer border-0 py-5">
             <!--TODO: Add pagination-->
-            <span class="text-muted text-sm">Showing @Model.Count() items out of @Model.Count() results found</span>
+            <span class="text-muted text-sm">Showing @Model.Users.Count() items out of @Model.Users.Count() results found</span>
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
