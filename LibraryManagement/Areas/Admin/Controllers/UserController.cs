@@ -8,6 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using LibraryManagement.Areas.Admin.Models.ViewModels;
+using System.ComponentModel;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -114,7 +115,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     ZipCode = user.ZipCode,
                     UserName = user.Username,
                     Email = user.Email,
-                    RentedBooks = user.RentedBooks,
+                    RentedBooks = new List<Guid>(),
                     Approved = true,
                     Banned = false
                 };

@@ -7,8 +7,13 @@ namespace LibraryManagement.Areas.Admin.Models.ViewModels
     {
         [Required]
         public IList<Book> Books { get; set; }
-        public string SearchBook { get; set; }
-        public string SearchAuthor { get; set; }
-        public int SearchYear { get; set; }
+
+        [MinLength(3, ErrorMessage = "You must enter at least 3 characters!")]
+        public string? SearchBook { get; set; }
+
+        [MinLength(3, ErrorMessage = "You must enter at least 3 characters!")]
+        public string? SearchAuthor { get; set; }
+
+        public int? SearchYear { get; set; }
     }
 }

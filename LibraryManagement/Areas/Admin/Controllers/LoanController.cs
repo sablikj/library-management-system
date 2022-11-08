@@ -119,6 +119,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Id = loan.Id,                
                 UserId = loan.UserId,
                 CreatedOn = loan.CreatedOn, 
+                Valid = loan.Valid,
                 LoanItems = loan.LoanItems,
                 Books = dbService.bookCollection.AsQueryable<Book>().ToList(),
                 Users = dbService.usersCollection.AsQueryable<User>().ToList()
@@ -240,6 +241,50 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 return ViewBag.ErrorMessage = "Loan Delete Error!";
             }
-        }              
+        } 
+        
+        public async Task<IActionResult> Details(Guid id)
+        {
+            if(id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.Id, id);
+            var loan = await dbService.loanCollection.Find(loanFilter).FirstOrDefaultAsync();
+            if (loan == null)
+            {
+                return NotFound();
+            }            
+
+            LoanViewModel loanVM = new LoanViewModel()
+            {
+                Id = loan.Id,
+                UserId = loan.UserId,
+                CreatedOn = loan.CreatedOn,
+                LoanItems = loan.LoanItems,
+                Books = new List<Book>(),
+                Users = new List<User>()
+            };
+
+            var userFilter = Builders<User>.Filter.Eq(user => user.Id, loan.UserId);
+            var user = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            loanVM.Users.Add(user);
+
+            // Books
+            foreach (var bookId in loan.LoanItems)
+            {
+                var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, bookId);
+                loanVM.Books.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+            }
+
+            return View(loanVM);
+        }
     }
 }

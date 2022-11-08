@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using MongoDbGenericRepository.Attributes;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace LibraryManagement.Models.Entity
 {
@@ -43,7 +44,8 @@ namespace LibraryManagement.Models.Entity
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email")]
         public string Email { get; set; }
-        
+
+        [ValidateNever]
         public IList<Guid> RentedBooks { get; set; }
 
         [Required]
