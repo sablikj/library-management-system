@@ -1,4 +1,4 @@
-﻿@model CompleteViewModel
+﻿@model DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,9 +9,41 @@
     <link rel="stylesheet" href="~/css/index.css" />
 }
 
+    <!-- Import modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-action="Import" method="post" enctype="multipart/form-data" class="form-signup bg-white shadow" style="border-radius: .75rem">
+                    <div class="modal-body">
+                   
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="p-1 mb-2 bg-danger text-black">@ViewBag.ErrorMessage</div>
+                        }
+
+                        <div class="form-group">
+                            <label asp-for="importData">Database data</label>
+                            <input type="file" asp-for="importData" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept=".json">
+                            <span asp-validation-for="importData" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container-fluid">
         <!-- Card stats -->
-        <div class="row g-6 mb-14">
+        <div class="row g-6">
             <!--Total Users-->
             <div class="col-xl-3 col-sm-6 col-12">
                 <div class="card shadow border-0">
@@ -19,7 +51,7 @@
                         <div class="row">
                             <div class="col">
                                 <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Users</span>
-                                <span class="h3 font-bold mb-0">@Model.Users.Count</span>
+                                <span class="h3 font-bold mb-0">@Model.completeVM.Users.Count</span>
                             </div>
                             <div class="col-auto">
                                 <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
@@ -39,7 +71,7 @@
                                 <span class="h6 font-semibold text-muted text-sm d-block mb-2">Active Loans</span>
                                 @{
                                 int active = 0;
-                                foreach (var item in Model.Loans)
+                                foreach (var item in Model.completeVM.Loans)
                                 {
                                     if (item.Valid)
                                     {
@@ -65,7 +97,7 @@
                     <div class="row">
                         <div class="col">
                             <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total Books</span>
-                            <span class="h3 font-bold mb-0">@Model.Books.Count</span>
+                            <span class="h3 font-bold mb-0">@Model.completeVM.Books.Count</span>
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
@@ -85,7 +117,7 @@
                             <span class="h6 font-semibold text-muted text-sm d-block mb-2">Books out of stock</span>
                             @{
                                 int stock = 0;
-                                foreach (var item in Model.Books)
+                                foreach (var item in Model.completeVM.Books)
                                 {
                                     if (item.Available == 0)
                                     {
@@ -106,8 +138,14 @@
         </div>
     </div>
 
+    <!--Data import export-->
+    <span class="d-flex my-4 justify-content-end text-center">
+        <a style="margin-right:5px;" class="btn btn-sm btn-tertiary shadow" asp-controller="Dashboard" asp-action="Export">Export</a>
+        <a style="color: white" class="btn btn-sm btn-info shadow" data-bs-toggle="modal" data-bs-target="#importModal">Import</a>
+    </span>
+
     <!--Not Approved Users-->
-    @if (Model.Users.Any(u => u.Approved == false))
+    @if (Model.completeVM.Users.Any(u => u.Approved == false))
     {
         <div class="card shadow border-0 mb-7">
             <div class="card-header">
@@ -128,7 +166,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Users)
+                        @foreach (var item in Model.completeVM.Users)
                         {
                             @if (item.Approved == false && item.Banned == false)
                             {
@@ -190,6 +228,7 @@
             </div>
         </div>
     }
+    
     <!--Active loans-->
     @if (active > 0)
     {
@@ -214,7 +253,7 @@
                         @{
                             int i = 0;
                         }
-                        @foreach (var item in Model.Loans)
+                        @foreach (var item in Model.completeVM.Loans)
                         {
                             if (item.Valid == false)
                             {
@@ -229,7 +268,7 @@
                                 </td>
                                 <td>
                                     @{
-                                        var user = Model.Users.FirstOrDefault(u => u.Id == item.UserId);
+                                        var user = Model.completeVM.Users.FirstOrDefault(u => u.Id == item.UserId);
                                     }
                                     <a asp-controller="User" asp-action="Details" asp-route-id="@user.Id">@user.Username</a>
                                 </td>
@@ -246,7 +285,7 @@
                                 <td>
                                     @{
                                         string b = "";
-                                        foreach (var book in Model.Books)
+                                        foreach (var book in Model.completeVM.Books)
                                         {
                                             if (b != "")
                                             {
@@ -298,7 +337,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Books)
+                        @foreach (var item in Model.completeVM.Books)
                         {
                             if (item.Available == 0)
                             {

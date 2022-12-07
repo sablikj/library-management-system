@@ -25,10 +25,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
         }
         
         public IActionResult Index(bookIndexViewModel bookIndexVM)
-        {
-            //bookIndexViewModel bookIndexVM = new bookIndexViewModel();
+        {            
             bookIndexVM.Books = dbService.bookCollection.AsQueryable<Book>().ToList();
-
             return View(bookIndexVM);
         }
 
