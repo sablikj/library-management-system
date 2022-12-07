@@ -6,9 +6,7 @@ using LibraryManagement.Models.Entity;
 using LibraryManagement.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using LibraryManagement.Areas.Admin.Models.ViewModels;
-using System.ComponentModel;
 using MongoDbGenericRepository.Utils;
 
 namespace LibraryManagement.Areas.Admin.Controllers
@@ -130,7 +128,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     ViewBag.Message = "User created successfully.";
-                    return RedirectToAction(nameof(DashboardController.Index), nameof(DashboardController).Replace("Controller", ""), new { area = "Admin" });
+                    return RedirectToAction(nameof(UserController.Index), nameof(UserController).Replace("Controller", ""), new { area = "Admin" });
                 }
                 else
                 {
@@ -251,9 +249,23 @@ namespace LibraryManagement.Areas.Admin.Controllers
             if(id == null)
             {
                 return NotFound();
-            }
+            }          
 
             var filter = Builders<User>.Filter.Eq(user => user.Id, id);
+
+            // Remove books from account
+            var user = await dbService.usersCollection.Find(filter).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            // Set any active loans to inactive
+            var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.UserId, id);
+            var loanUpdate = Builders<Loan>.Update.Set(l => l.Valid, false);
+            var loansResult = await dbService.loanCollection.UpdateManyAsync(loanFilter, loanUpdate);
+
+
             var result = await dbService.usersCollection.DeleteOneAsync(filter);
 
             if(result.DeletedCount == 1)
@@ -416,6 +428,6 @@ namespace LibraryManagement.Areas.Admin.Controllers
             }
             
             return NotFound();
-        }
+        }        
     }
 }

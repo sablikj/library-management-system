@@ -19,6 +19,7 @@
     <Folder Include="Areas\Customer\Models\ViewModels\" />
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Models\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -20,20 +20,18 @@
         <dl class="row">
             <!--Image-->
             <div class="col w-25">
-                <div class="col w-50">
+                <div class="col w-50 largepic mx-auto d-block">
                     @{                        
                         var base64 = Convert.ToBase64String(Model.ImageContent);
                         var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
                     }
-                    <div class="largepic">
-                        <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@Model.Id">
-                            <img class="largepic__image" src="@imgSrc" />
-                            <div class="largepic__content">
-                                <span class="largepic__icon"><i class="bi bi-pencil"></i></span>
-                                <span class="largepic__text">Edit</span>
-                            </div>
-                        </a>
-                    </div>
+                    <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@Model.Id">
+                        <img class="largepic__image" src="@imgSrc" style="float:middle" />
+                        <div class="largepic__content">
+                            <span class="largepic__icon"><i class="bi bi-pencil"></i></span>
+                            <span class="largepic__text">Edit</span>
+                        </div>
+                    </a>
                 </div>       
             </div>
             <!--Info-->
@@ -93,17 +91,12 @@
                     <dd class="col w-75">
                         @Html.DisplayFor(model => model.Available)
                     </dd>
-                </div>
-                <div class="row">
-                    <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </dt>
-                    <dd class="col w-75">
-                        @Html.DisplayFor(model => model.Description)
-                        
-                    </dd>
                 </div>             
-            </div>   
+            </div>              
+        </dl>
+        <dl class="row mb-7 px-2"> 
+            <hr />
+            @Html.DisplayFor(model => model.Description)
         </dl>
     </div>
 </div>
