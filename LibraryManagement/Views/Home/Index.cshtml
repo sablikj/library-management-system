@@ -1,42 +1,93 @@
-﻿@model IEnumerable<LibraryManagement.Models.Entity.Book>
+@model IEnumerable<LibraryManagement.Models.Entity.Book>
 
 @{
     ViewData["Title"] = "Home";
 }
 
 @section Styles
-{
+    {
     <link rel="stylesheet" href="~/css/homepage.css" />
 }
 
-<div align="center" style="white-space:nowrap">      
-    <h2 style="display:inline; white-space:nowrap;"><b>Open Library</b></h2>
-</div>
-   
-<section class="container py-5">    
+<section class="container py-5">
+    @{
+        int i = 0;
+    }
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4  w-100 h-100 shadow bg-white" style="border-radius: .75rem">
+
+        <div id="carouselExampleFade" class="carousel slide carousel-fade w-75 justify-content-center text-center" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @foreach (var item in Model)
+                {
+                    i++;
+                    var active = i == 1 ? "active" : "";
+                        
+                        <div class="carousel-item pt-3 justify-content-center @active">
+                            @{
+                                var base64 = Convert.ToBase64String(item.ImageContent);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                            }
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                            <span style="display:inline-block" class="d-flex justify-content-center text-center">
+                                <img src="@imgSrc" class="d-block w-25" style="margin:auto; width: 65vh; height: 35vh; object-fit: fill" alt="item.ImageAlt">
+                                <div class="float-container">
+                                    <div class="text-center">
+                                        <h2 class="fw-bolder">@Html.DisplayFor(modelItem => item.Name)</h2>
+                                        @Html.DisplayFor(modelItem => item.Author)
+                                    </div>
+
+                                    <div class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </div>
+
+                                </div>
+
+
+                            </span>
+                        </a>
+
+                        </div>
+                   
+                }
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+</section>
     <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4  w-75 h-100 shadow bg-white" style="border-radius: .75rem">
         @foreach (var item in Model)
         {
-            <a asp-action="Details" asp-route-id="@item.Id">
-                <div class="card col m-2 bg-white shadow d-flex justify-content-center text-center" style="border-radius: .75rem">                
-                    <!-- Product image-->
-                    <div class="card-img-top pt-2 justify-content-center">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <div class="card col m-2 bg-white shadow d-flex justify-content-center text-center" style="border-radius: .75rem">
+                        <!-- Product image-->
+                        <div class="card-img-top pt-2 justify-content-center">
                         @{
                             var base64 = Convert.ToBase64String(item.ImageContent);
                             var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
                         }
-                        <img class="w-50" src="@imgSrc" alt="item.ImageAlt" />
-                    </div>
-
-                    <!-- Product details-->
-                    <div class="card-body">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">@Html.DisplayFor(modelItem => item.Name)</h5>
-                            @Html.DisplayFor(modelItem => item.Author)
+                            <img class="w-50" src="@imgSrc" alt="item.ImageAlt" />
                         </div>
-                    </div>                
-                </div>
-            </a>
-        }          
-    </div>    
+
+                        <!-- Product details-->
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            @Html.DisplayFor(modelItem => item.Author)
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+        }
+    </div>
 </section>
