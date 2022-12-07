@@ -1,0 +1,138 @@
+﻿@model LoanViewModel
+
+@{
+    ViewData["Title"] = "Loan Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles
+    {
+    <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+}
+
+    <div class="container-fluid" id="logreg-forms" style="border-radius: .75rem">
+        <div class="row">
+            <!--User Detail-->
+            <div class="bg-white col mx-4 px-4 mb-7 w-50 shadow" style="border-radius: .75rem; max-height:40%;">
+                <h1 class="pt-2 d-flex justify-content-between align-items-center">
+                    Loan detail
+                    <span>
+                        <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary text-white" asp-controller="Loan" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil"></i></a>
+                        <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
+                    </span>
+                </h1>
+                <hr />
+                <dl class="row w-100">
+                    <dt class="col-sm-4">
+                        Created
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.CreatedOn)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Quantity
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Books.Count
+                    </dd>
+                    <dt class="col-sm-4">
+                        User Status
+                    </dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Users[0].Approved == true)
+                        {
+                            <span class="badge badge-lg badge-dot">
+                                <i class="bg-success"></i>Approved
+                            </span>
+                        }
+                        @if (Model.Users[0].Approved == false && Model.Users[0].Banned == false)
+                        {
+                            <span class="badge badge-lg badge-dot">
+                                <i class="bg-warning"></i>Not approved
+                            </span>
+                        }
+                        @if (Model.Users[0].Banned == true)
+                        {
+                            <span class="badge badge-lg badge-dot">
+                                <i class="bg-danger"></i>Banned
+                            </span>
+                        }
+                    </dd>
+                    <dt class="col-sm-4">
+                        User
+                    </dt>
+                    <dd class="col-sm-8">
+                        <a asp-controller="User" asp-action="Details" asp-route-id="@Model.Users[0].Id">@Html.DisplayFor(model => model.Users[0].Username)</a>
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Valid)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Valid == true)
+                        {
+                            <span class="badge badge-lg badge-dot">
+                                <i class="bg-success"></i>Valid
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-lg badge-dot">
+                                <i class="bg-danger"></i>Expired
+                            </span>
+                        }
+                </dd>
+            </dl>
+        </div>
+
+        <!--Rented books-->
+        <!--TODO: Change px values to something else-->
+        <div class="col bg-white w-50 px-0 mb-7" style="border-radius: .75rem; max-height:450px;">
+            <h1 class="row bg-white pt-2 mx-2 px-4 d-flex justify-content-between align-items-center" style="border-radius: .75rem;">
+                Rented Books
+            </h1>
+            <hr />
+            <div class="bg-white col w-100 shadow overflow-auto" data-simplebar style="border-radius: .75rem; max-height: 360px;">
+                <div class="table-responsive w-100">
+                    <table class="table table-hover table-responsive">
+                        <tbody>
+                            @foreach (var item in Model.Books)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                            var base64 = Convert.ToBase64String(item.ImageContent);
+                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        }
+                                        <div class="profilepic">
+                                            <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@item.Id">
+                                                <img class="profilepic__image" src="@imgSrc" />
+                                                <div class="profilepic__content">
+                                                    <span class="profilepic__icon"><i class="bi bi-pencil"></i></span>
+                                                    <span class="profilepic__text">Edit</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Author)
+                                    </td>
+                                    <td class="text-center">
+                                        <a style="margin-bottom:5px;" class="btn btn-sm btn-danger" asp-area="Admin" asp-controller="User" asp-action="RemoveBook" asp-route-userId="@Model.Id" asp-route-bookId="@item.Id"><i class="bi bi-journal-x"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+}

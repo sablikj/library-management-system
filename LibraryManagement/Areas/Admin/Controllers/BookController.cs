@@ -3,8 +3,13 @@ using LibraryManagement.Models.Entity;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using MongoDbGenericRepository.Utils;
 using System.Data;
+using System.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -19,9 +24,10 @@ namespace LibraryManagement.Areas.Admin.Controllers
             this.dbService = dbService;
         }
         
-        public IActionResult Index()
-        {
-            return View(dbService.bookCollection.AsQueryable<Book>().ToList());
+        public IActionResult Index(bookIndexViewModel bookIndexVM)
+        {            
+            bookIndexVM.Books = dbService.bookCollection.AsQueryable<Book>().ToList();
+            return View(bookIndexVM);
         }
 
         public IActionResult Create()
@@ -259,6 +265,45 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 return ViewBag.ErrorMessage = "Book Delete Error!";
             }
-        }       
+        }
+
+        // TODO: Rework SEARCH function (to loop)
+        public async Task<IActionResult> Search(bookIndexViewModel bookIndexVM)
+        {
+            if (bookIndexVM == null)
+            {
+                return NotFound();
+            }            
+                        
+            var builder = Builders<Book>.Filter;
+            FilterDefinition<Book> filterName = builder.Empty;
+            FilterDefinition<Book> filterYear = builder.Empty;
+            FilterDefinition<Book> filterAuthor = builder.Empty;
+
+            if (bookIndexVM.SearchBook != null)
+            {
+                filterName = builder.Regex(b => b.Name, new BsonRegularExpression(bookIndexVM.SearchBook.Pascalize()));                    
+            }
+            else if (bookIndexVM.SearchYear != 0 && bookIndexVM.SearchYear != null)
+            {
+                filterYear = builder.Eq(b => b.Year, bookIndexVM.SearchYear);
+            }             
+            else if (bookIndexVM.SearchAuthor != null)
+            {
+                filterAuthor = builder.Regex(b => b.Author, new BsonRegularExpression(bookIndexVM.SearchAuthor.Pascalize()));
+            }                
+
+            var filter = builder.And(new [] {filterName, filterYear, filterAuthor} );                
+            List<Book> books = new List<Book>();
+            books = await dbService.bookCollection.Find(filter).ToListAsync();
+
+            if (books != null)
+            {                    
+                bookIndexVM.Books = books;                    
+                return View("Index", bookIndexVM);
+            }
+            
+            return NotFound();
+        }
     }
 }

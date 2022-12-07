@@ -20,6 +20,8 @@ namespace LibraryManagement.Areas.Admin.Models.ViewModels
         [Required]
         public Guid UserId { get; set; }
 
+        public bool Valid { get; set; }
+
         [Required]
         public IList<Guid> LoanItems { get; set; }
 

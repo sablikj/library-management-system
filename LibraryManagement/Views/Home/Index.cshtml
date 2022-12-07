@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LibraryManagement.Models.Entity.Book>
+@model IEnumerable<LibraryManagement.Models.Entity.Book>
 
 @{
     ViewData["Title"] = "Home";
@@ -6,9 +6,7 @@
 
 @section Styles
     {
-
-        <link rel="stylesheet" href="~/css/homepage.css" />
-
+    <link rel="stylesheet" href="~/css/homepage.css" />
 }
 
 <section class="container py-5">
@@ -66,8 +64,6 @@
     </div>
 
 </section>
-
-<section class="container py-5">
     <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4  w-75 h-100 shadow bg-white" style="border-radius: .75rem">
         @foreach (var item in Model)
         {
@@ -89,52 +85,9 @@
                             @Html.DisplayFor(modelItem => item.Author)
                             </div>
                         </div>
+
                     </div>
                 </a>
         }
     </div>
-
 </section>
-
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            @{
-                /*for (int i = 0; i < Model.Products.Count; i++)
-                {
-                <div class="card h-auto" style="margin:10px; padding:0px;">
-                <!-- Product image-->
-                <a class="btn mt-auto" style="padding:0px;" asp-controller="Product" asp-action="Detail" asp-route-ID="@Model.Products[i].ID">
-                <img class="card-img-top" style="padding:0px;" src="@Model.Products[i].ImageSource" alt="@Model.Products[i].ImageAlt" />
-                </a>
-                <!-- Product details-->
-                <div class="card-body p-2">
-                <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder" style="text-wrap">@Model.Products[i].Name</h5>
-                <!-- Product price-->
-                @Model.Products[i].Price Kč vč. DPH
-                </div>
-                </div>
-                <!-- Product actions-->
-                <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                <div class="text-center"><a class="btn btn-outline-dark mt-auto" onclick="Buy(@Model.Products[i].ID,'@Url.Action("AddOrderItemsToSession", "CustomerOrderNotCart", new { Area = "Customer" })', '#total_price', '@System.Globalization.CultureInfo.CurrentCulture.Name', '1')">Koupit</a></div>
-                </div>
-
-                </div>
-                </div>
-                }*/
-            }
-
-        </div>
-    </div>
-</section>
-
-@section Scripts
-    {
-
-}
-
-
-

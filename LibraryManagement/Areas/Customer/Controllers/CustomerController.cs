@@ -193,5 +193,10 @@ namespace LibraryManagement.Areas.Customer.Controllers
                 return ViewBag.ErrorMessage = "Book remove error!";
             }
         }
+
+        public async Task<IActionResult> Borrow(Guid id)
+        {
+            return NotFound();
+        }
     }
 }
