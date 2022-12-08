@@ -6941,6 +6941,14 @@ textarea.form-control-lg {
   border-width: 5px !important;
 }
 
+.w-10 {
+    width: 10% !important;
+}
+
+.w-15 {
+    width: 15% !important;
+}
+
 .w-25 {
   width: 25% !important;
 }
@@ -6971,6 +6979,14 @@ textarea.form-control-lg {
 
 .min-vw-100 {
   min-width: 100vw !important;
+}
+
+.h-10 {
+    height: 10% !important;
+}
+
+.h-15 {
+    height: 15% !important;
 }
 
 .h-25 {
