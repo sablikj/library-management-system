@@ -1,0 +1,99 @@
+﻿@model bookIndexViewModel
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/Index.css" />
+}
+
+
+<section class="mb-7">
+    <!--Searchbar-->
+    <form asp-controller="Home" asp-action="Search" method="get" class="card shadow border-0 mb-7 mx-auto w-50" style="border-radius: .75rem">
+        <div class="row my-2 d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+                <input asp-for="SearchBook" type="text" class="form-control" placeholder="Dune">
+                <span asp-validation-for="SearchBook" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-tertiary btn-block"><i class="bi bi-search"></i></button>
+                <a class="btn btn-block btn-secondary mx-2" data-toggle="collapse" href="#filters" role="button" aria-expanded="false" aria-controls="filters" class="advanced">
+                    <i class="bi bi-filter"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row w-50 ms-18">
+            <div class="collapse" id="filters">
+                <div class="row py-2">
+                    <div class="col-md-6">
+                        <input asp-for="SearchAuthor" type="text" placeholder="Author" class="form-control w-100">
+                        <span asp-validation-for="SearchAuthor" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="SearchYear" type="number" class="form-control w-100" placeholder="Year">
+                        <span asp-validation-for="SearchYear" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="container shadow bg-white" style="border-radius: .75rem">
+
+        <!--Header and sorting-->
+        <span style="display: inline-block" class="d-flex p-2 justify-content-between">
+            <h2 class="align-self-end">Books in library</h2>
+             
+            <div class="dropdown align-self-end">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort by
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Name</a></li>
+                <li><a class="dropdown-item" href="#">Author</a></li>
+                <li><a class="dropdown-item" href="#">Year</a></li>
+              </ul>
+            </div>
+        </span>
+        <hr class="mt-0" /> 
+
+        <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4">          
+            @foreach (var item in Model.Books)
+            {
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <div class="card col m-2 bg-white shadow d-flex justify-content-center text-center" style="border-radius: .75rem">
+                        <!-- Product image-->
+                        <div class="card-img-top pt-2 justify-content-center">
+                            @{
+                                var base64 = Convert.ToBase64String(item.ImageContent);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            <img class="w-50" src="@imgSrc" alt="item.ImageAlt" />
+                        </div>
+
+                        <!-- Product details-->
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                @Html.DisplayFor(modelItem => item.Author)
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>    
+</section>
+
+
+@section Scripts
+{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
