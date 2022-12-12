@@ -10,6 +10,21 @@
     display: none;
 }
 
+.card-img {
+    object-fit: cover;
+    object-position: center;
+    height: 12rem;
+    overflow: hidden;
+}
+
+.card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: fit-content;
+    white-space: nowrap;
+    display: inline-block;
+}
+
 .search {
     background-color: #fff;
     padding: 4px;
@@ -107,6 +122,7 @@
         top: 5px
     }
 }
+
 ///////////////////////////////////////////////////////
 .advanced {
     text-decoration: none;
@@ -126,11 +142,9 @@
 .profilepic {
     width: 3rem;
     height: 5rem;
-    
     align-self: center;
-    margin: -0.1rem 1.2rem 0 -0.2rem; 
-    
-    position: relative;    
+    margin: -0.1rem 1.2rem 0 -0.2rem;
+    position: relative;
     border-radius: 0.75rem;
     overflow: hidden;
     background-color: #111;
@@ -182,10 +196,10 @@
 }
 
 /*Book detail large image*/
-.largepic {    
+.largepic {
     align-self: center;
     margin: -0.1rem 1.2rem 0 -0.2rem;
-    position: relative;    
+    position: relative;
     border-radius: 0.75rem;
     overflow: hidden;
     background-color: #111;
