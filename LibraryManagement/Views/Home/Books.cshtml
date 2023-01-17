@@ -51,9 +51,9 @@
                 Sort by
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Name</a></li>
-                <li><a class="dropdown-item" href="#">Author</a></li>
-                <li><a class="dropdown-item" href="#">Year</a></li>
+                <li><a class="dropdown-item" asp-controller="Home" asp-action="Sort" asp-route-filter="Name" asp-route-books=@Model>Name</a></li>
+                <li><a class="dropdown-item" asp-action="Sort" asp-route-filter="Author" asp-route-books=@Model>Author</a> </li>
+                <li><a class="dropdown-item" asp-action="Sort" asp-route-filter="Year" asp-route-books=@Model>Year</a></li>
               </ul>
             </div>
         </span>

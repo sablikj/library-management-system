@@ -428,6 +428,40 @@ namespace LibraryManagement.Areas.Admin.Controllers
             }
             
             return NotFound();
-        }        
+        }
+
+        public async Task<IActionResult> Sort(UserIndexViewModel users, string filter)
+        {
+            if (users != null)
+            {
+                UserIndexViewModel userIndexVM = new UserIndexViewModel();
+                FilterDefinition<User> sortFilter = Builders<User>.Filter.Empty;
+
+                if (filter == "Name")
+                {
+                    SortDefinition<User> sort = Builders<User>.Sort.Ascending(u => u.Name);
+                    userIndexVM.Users = dbService.usersCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+                else if (filter == "Surname")
+                {
+                    SortDefinition<User> sort = Builders<User>.Sort.Ascending(u => u.Surname);
+                    userIndexVM.Users = dbService.usersCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+                else if (filter == "City")
+                {
+                    SortDefinition<User> sort = Builders<User>.Sort.Ascending(u => u.City);
+                    userIndexVM.Users = dbService.usersCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+                else
+                {
+                    SortDefinition<User> sort = Builders<User>.Sort.Ascending(u => u.SSN);
+                    userIndexVM.Users = dbService.usersCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+
+                return View("Index", userIndexVM);
+            }
+
+            return NotFound();
+        }
     }
 }
