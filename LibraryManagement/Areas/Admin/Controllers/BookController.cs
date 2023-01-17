@@ -270,39 +270,66 @@ namespace LibraryManagement.Areas.Admin.Controllers
         // TODO: Rework SEARCH function (to loop)
         public async Task<IActionResult> Search(bookIndexViewModel bookIndexVM)
         {
-            if (bookIndexVM == null)
+            if (bookIndexVM != null)
             {
-                return NotFound();
-            }            
-                        
-            var builder = Builders<Book>.Filter;
-            FilterDefinition<Book> filterName = builder.Empty;
-            FilterDefinition<Book> filterYear = builder.Empty;
-            FilterDefinition<Book> filterAuthor = builder.Empty;
+                var builder = Builders<Book>.Filter;
+                FilterDefinition<Book> filterName = builder.Empty;
+                FilterDefinition<Book> filterYear = builder.Empty;
+                FilterDefinition<Book> filterAuthor = builder.Empty;
 
-            if (bookIndexVM.SearchBook != null)
-            {
-                filterName = builder.Regex(b => b.Name, new BsonRegularExpression(bookIndexVM.SearchBook.Pascalize()));                    
-            }
-            else if (bookIndexVM.SearchYear != 0 && bookIndexVM.SearchYear != null)
-            {
-                filterYear = builder.Eq(b => b.Year, bookIndexVM.SearchYear);
-            }             
-            else if (bookIndexVM.SearchAuthor != null)
-            {
-                filterAuthor = builder.Regex(b => b.Author, new BsonRegularExpression(bookIndexVM.SearchAuthor.Pascalize()));
-            }                
+                if (bookIndexVM.SearchBook != null)
+                {
+                    filterName = builder.Regex(b => b.Name, new BsonRegularExpression(bookIndexVM.SearchBook.Pascalize()));
+                }
+                else if (bookIndexVM.SearchYear != 0 && bookIndexVM.SearchYear != null)
+                {
+                    filterYear = builder.Eq(b => b.Year, bookIndexVM.SearchYear);
+                }
+                else if (bookIndexVM.SearchAuthor != null)
+                {
+                    filterAuthor = builder.Regex(b => b.Author, new BsonRegularExpression(bookIndexVM.SearchAuthor.Pascalize()));
+                }
 
-            var filter = builder.And(new [] {filterName, filterYear, filterAuthor} );                
-            List<Book> books = new List<Book>();
-            books = await dbService.bookCollection.Find(filter).ToListAsync();
+                var filter = builder.And(new[] { filterName, filterYear, filterAuthor });
+                List<Book> books = new List<Book>();
+                books = await dbService.bookCollection.Find(filter).ToListAsync();
 
+                if (books != null)
+                {
+                    bookIndexVM.Books = books;
+                    return View("Index", bookIndexVM);
+                }
+            }        
+
+            return NotFound();
+        }
+
+        public async Task<IActionResult> Sort(bookIndexViewModel books, string filter)
+        {
             if (books != null)
-            {                    
-                bookIndexVM.Books = books;                    
+            {
+                bookIndexViewModel bookIndexVM = new bookIndexViewModel();
+                FilterDefinition<Book> sortFilter = Builders<Book>.Filter.Empty;
+
+                if (filter == "Name")
+                {
+                    SortDefinition<Book> sort = Builders<Book>.Sort.Ascending(b => b.Name);
+                    bookIndexVM.Books = dbService.bookCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+                else if (filter == "Author")
+                {
+                    SortDefinition<Book> sort = Builders<Book>.Sort.Ascending(b => b.Author);
+                    bookIndexVM.Books = dbService.bookCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+                else
+                {
+                    SortDefinition<Book> sort = Builders<Book>.Sort.Ascending(b => b.Year);
+                    bookIndexVM.Books = dbService.bookCollection.Find(sortFilter).Sort(sort).ToList();
+                }
+
                 return View("Index", bookIndexVM);
             }
-            
+
             return NotFound();
         }
     }
