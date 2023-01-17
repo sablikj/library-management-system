@@ -45,14 +45,28 @@ namespace LibraryManagement.Areas.Admin.Controllers
         {
             if (loanVM != null && loanVM.LoanItems.Count > 0)
             {
+                string s = "";
                 Loan loan = new Loan()
                 {
                     Id = loanVM.Id,
                     UserId = loanVM.UserId,
                     CreatedOn = DateTime.Now,
                     Valid = true,
-                    LoanItems = loanVM.LoanItems
+                    LoanItems = loanVM.LoanItems,
+                    BookNames = string.Empty
                 };
+
+                for (int i = 0; i < loanVM.Books.Count; i++)
+                {
+                    if(i != loanVM.Books.Count - 1)
+                    {
+                        loan.BookNames += loanVM.Books[i].Name + ", ";
+                    }
+                    else
+                    {
+                        loan.BookNames += loanVM.Books[i].Name;
+                    }                    
+                }
 
                 // Book quantity edit
                 foreach(var item in loan.LoanItems)
@@ -140,7 +154,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 Id = loanVM.Id,
                 UserId = loanVM.UserId,
-                LoanItems = loanVM.LoanItems               
+                LoanItems = loanVM.LoanItems                
             };
             
             if (loanEdit == null)

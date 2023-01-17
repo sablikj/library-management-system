@@ -55,16 +55,7 @@
                             @time
                         </td>                              
                         <td>
-                            @{
-                                string b = "";
-                                foreach (var book in item.LoanItems) {
-                                    if(b != ""){
-                                        b += ", ";
-                                    }
-                                    b += Model.Books.FirstOrDefault(b => b.Id == book).Name;
-                                }
-                            }
-                            @b
+                            @Html.DisplayFor(modelItem => item.BookNames)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.LoanItems.Count)

@@ -22,5 +22,7 @@ namespace LibraryManagement.Models.Entity
                 
         [Required]
         public IList<Guid> LoanItems { get; set; }
+
+        public string? BookNames { get; set; }
     }
 }

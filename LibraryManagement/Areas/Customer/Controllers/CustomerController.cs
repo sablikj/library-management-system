@@ -1,17 +1,19 @@
 ﻿
 using LibraryManagement.Areas.Admin.Controllers;
 using LibraryManagement.Areas.Admin.Models.ViewModels;
+using LibraryManagement.Controllers;
 using LibraryManagement.Models.Entity;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using NuGet.Packaging;
 using System.Security.Claims;
 
 namespace LibraryManagement.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer")]    
     public class CustomerController : Controller
     {
         protected DatabaseService dbService;
@@ -194,8 +196,58 @@ namespace LibraryManagement.Areas.Customer.Controllers
             }
         }
 
-        public async Task<IActionResult> Borrow(Guid id)
-        {
+
+        public async Task<IActionResult> CreateLoan(Guid bookId, string username)
+        {         
+            if (bookId != Guid.Empty && username != null)
+            {
+                // Find user by username
+                var userFilter = Builders<User>.Filter.Eq(u => u.Username, username);
+                User user = await dbService.usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+                // Book quantity edit                
+                var filter = Builders<Book>.Filter.Eq(b => b.Id, bookId);
+                Book book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();
+
+                var update = Builders<Book>.Update.Set(b => b.Available, book.Available - 1);
+
+                var result = await dbService.bookCollection.UpdateOneAsync(filter, update);
+                if (!result.IsAcknowledged)
+                {
+                    // TODO: Add error view
+                    return NotFound();
+                }
+
+                // Create loan
+                List<Guid> items = new List<Guid>() { bookId };
+                Loan loan = new Loan()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = user.Id,
+                    CreatedOn = DateTime.Now,
+                    Valid = true,
+                    LoanItems = items,
+                    BookNames = book.Name
+                };                
+            
+                IList<Guid> rentedBooks = user.RentedBooks;
+                rentedBooks.AddRange(loan.LoanItems);
+
+                var userUpdate = Builders<User>.Update.Set(u => u.RentedBooks, rentedBooks);
+                var userResult = await dbService.usersCollection.UpdateOneAsync(userFilter, userUpdate);
+                if (!userResult.IsAcknowledged)
+                {
+                    // TODO: Add error view
+                    return NotFound();                
+                }
+                // Update book count fot display
+                book.Available = book.Available - 1;
+
+                // Add loan to DB
+                await dbService.loanCollection.InsertOneAsync(loan);
+                ViewBag.Message = "Loan created successfully.";
+                return View("../Home/Details", book);                
+            }
             return NotFound();
         }
     }

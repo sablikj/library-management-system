@@ -31,13 +31,9 @@
                         var base64 = Convert.ToBase64String(Model.ImageContent);
                         var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
                     }
-                    <a asp-controller="Book" asp-action="imageEdit" asp-route-id="@Model.Id">
-                        <img class="largepic__image" src="@imgSrc" style="float:middle" />
-                        <div class="largepic__content">
-                            <span class="largepic__icon"><i class="bi bi-pencil"></i></span>
-                            <span class="largepic__text">Edit</span>
-                        </div>
-                    </a>
+                    
+                    <img src="@imgSrc" alt="Model.Name" />                      
+                   
                 </div>
             </div>
             <!--Info-->
@@ -73,15 +69,7 @@
                     <dd class="col w-75">
                         @Html.DisplayFor(model => model.ISBN)
                     </dd>
-                </div>
-                <div class="row">
-                    <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.ImageAlt)
-                    </dt>
-                    <dd class="col w-75">
-                        @Html.DisplayFor(model => model.ImageAlt)
-                    </dd>
-                </div>
+                </div>                
                 <div class="row">
                     <dt class="col w-25">
                         @Html.DisplayNameFor(model => model.Quantity)
@@ -105,7 +93,7 @@
                         if(Model.Available > 0)
                         {
                             // Display borrow button only if user is logged in and book is available
-                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white w-25 mx-auto d-block" asp-controller="Customer" asp-action="Borrow"><i class="bi bi-book me-2"></i>    Borrow</a>
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white w-25 mx-auto d-block" asp-area="Customer" asp-controller="Customer" asp-action="CreateLoan" asp-route-bookId=@Model.Id asp-route-username=@User.Identity.Name><i class="bi bi-book me-2"></i>    Borrow</a>
                         }
                         else
                         {
@@ -121,15 +109,4 @@
             @Html.DisplayFor(model => model.Description)
         </dl>
     </div>    
-</div>
-<div class="container d-flex justify-content-center my-7" id="logreg-forms" style="border-radius: .75rem">
-    <div class="bg-white px-4 w-75 shadow" style="border-radius: .75rem">
-        <h3 class="pt-2 d-flex justify-content-between align-items-center">
-            More books from this author
-        </h3>
-        <hr />
-        <dl class="row">
-            <!--TODO: Add list of books from same author-->
-        </dl>
-    </div>
 </div>

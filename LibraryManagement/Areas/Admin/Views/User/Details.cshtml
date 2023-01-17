@@ -194,18 +194,7 @@
                                 @time
                             </td>
                             <td>
-                                @{
-                                    string b = "";
-                                    foreach (var book in Model.Books)
-                                    {
-                                        if (b != "")
-                                        {
-                                            b += ", ";
-                                        }
-                                        b += book.Name;
-                                    }
-                                }
-                                @b
+                                @Html.DisplayFor(modelItem => item.BookNames)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LoanItems.Count)
@@ -258,18 +247,7 @@
                                 @Html.DisplayFor(modelItem => item.CreatedOn)
                             </td>
                             <td>
-                                @{
-                                    string b = "";
-                                    foreach (var book in Model.Books)
-                                    {
-                                        if (b != "")
-                                        {
-                                            b += ", ";
-                                        }
-                                        b += book.Name;
-                                    }
-                                }
-                                @b
+                                @Html.DisplayFor(modelItem => item.BookNames)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LoanItems.Count)

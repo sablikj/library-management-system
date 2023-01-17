@@ -5,17 +5,16 @@
 }
 
 @section Styles
-    {
+{
     <link rel="stylesheet" href="~/css/homepage.css" />
 }
-
+<!-- Carousel -->
 <section class="mb-7">
     <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 h-50 w-100 shadow bg-white" style="border-radius: .75rem">
         <div id="carouselHero" class="carousel slide carousel-fade h-50 w-100 justify-content-center text-center" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @{
                     int i = 0;
-
                     foreach (var item in Model)
                     {
                         i++;
@@ -65,11 +64,11 @@
             </div>
         </div>
     </div>
-
 </section>
 
 
 <div class="row">
+    <!-- Random books -->
     <section class="mb-7 col-9">
         <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 h-100 shadow bg-white" style="border-radius: .75rem; float:left">
             @foreach (var item in Model)
@@ -98,8 +97,14 @@
         </div>
     </section>
 
+    <!-- Most popular books -->
     <section class="mb-7 col-3">
-        <div class="row row-cols-3 row-cols-md-3 row-cols-xl-1 h-100 w-75 shadow bg-white" style="border-radius: .75rem; float:left;">
+        <div class="row row-cols-3 row-cols-md-3 row-cols-xl-1 h-100 w-75 shadow bg-white" style="border-radius: .75rem; float:right;">
+            <div class="m-2 mx-auto">
+                <h4>Popular titles</h4>
+                <hr />
+            </div>
+            
             @{
                 int a = 0;
 
@@ -110,15 +115,14 @@
                         @{
                             if (a < 4)
                             {
-
-                                    <!-- Product image-->
-                                <div class="pt-2 justify-content-center text-center">
-                                        @{
-                                            var base64 = Convert.ToBase64String(item.ImageContent);
-                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                                        }
-                                        <img class="w-50 card-img" src="@imgSrc" alt="item.ImageAlt" />
-                                    </div>
+                                <!-- Product image-->
+                                <div class="justify-content-center text-center">
+                                    @{
+                                        var base64 = Convert.ToBase64String(item.ImageContent);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                    }
+                                    <img class="w-50 card-img" src="@imgSrc" alt="item.ImageAlt" />
+                                </div>
            
                             }
                         }
