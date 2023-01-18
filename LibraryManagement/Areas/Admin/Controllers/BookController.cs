@@ -266,8 +266,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return ViewBag.ErrorMessage = "Book Delete Error!";
             }
         }
-
-        // TODO: Rework SEARCH function (to loop)
+               
         public async Task<IActionResult> Search(bookIndexViewModel bookIndexVM)
         {
             if (bookIndexVM != null)

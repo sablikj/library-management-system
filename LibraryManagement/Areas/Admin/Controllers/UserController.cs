@@ -376,7 +376,6 @@ namespace LibraryManagement.Areas.Admin.Controllers
             }
         }
 
-        // TODO: Rework SEARCH function (to loop)
         public async Task<IActionResult> Search(UserIndexViewModel userIndexVM)
         {
             if (userIndexVM == null)

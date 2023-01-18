@@ -25,22 +25,7 @@
                                 var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 
                             }
-                            <a asp-action="Details" asp-route-id="@item.Id">
-                                <!--
-                                    <span style="display:inline-block" class="d-flex justify-content-center text-center">
-                                        <img src="@imgSrc" class="d-block w-25" style="margin:auto; width: 65vh; height: 35vh; object-fit: fill" alt="item.ImageAlt">
-                                        <div class="float-container">
-                                            <span style="display:inline-block" class="d-flex justify-content-start text-start">
-                                                <h2 class="fw-bolder">@Html.DisplayFor(modelItem => item.Name)</h2>
-                                                <p>| @Html.DisplayFor(modelItem => item.Author)</p>
-                                            </span>
-                                            <hr />
-                                            <div class="text-center">
-                                @Html.DisplayFor(modelItem => item.Description)
-                                            </div>
-                                        </div>
-                                    </span> -->
-
+                            <a asp-action="Details" asp-route-id="@item.Id">                               
                                 <div class="row">
                                     <div class="col-4 mx-auto d-block">
                                         <img src="@imgSrc" class="w-50 img-responsive" alt="item.ImageAlt">
@@ -66,7 +51,6 @@
     </div>
 </section>
 
-
 <div class="row">
     <!-- Random books -->
     <section class="mb-7 col-9">
@@ -87,7 +71,7 @@
                         <!-- Product details-->
                         <div class="card-body">
                             <div class="text-center">
-                                <h5 class="fw-bolder" style="font-size:1vw;">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                <h5 class="fw-bolder" style="font-size:1em;">@Html.DisplayFor(modelItem => item.Name)</h5>
                                 @Html.DisplayFor(modelItem => item.Author)
                             </div>
                         </div>

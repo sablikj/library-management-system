@@ -56,7 +56,6 @@ namespace LibraryManagement.Controllers
             return View(bookIndexVM);
         }
 
-        // TODO: Rework SEARCH function (to loop)
         public async Task<IActionResult> Search(bookIndexViewModel bookIndexVM)
         {
             if (bookIndexVM != null)
