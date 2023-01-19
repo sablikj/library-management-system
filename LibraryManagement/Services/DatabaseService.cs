@@ -7,10 +7,7 @@ using MongoDB.Driver;
 namespace LibraryManagement.Services
 {
     public class DatabaseService
-    {
-        //private readonly IMongoDatabase _database;
-        //private readonly IMongoCollection<Book> _booksCollection;
-
+    {      
         public IMongoCollection<Book> bookCollection { get; set; }
         public IMongoCollection<User> usersCollection { get; set; }
         public IMongoCollection<Loan> loanCollection { get; set; }
