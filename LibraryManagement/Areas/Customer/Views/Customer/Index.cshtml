@@ -175,7 +175,7 @@
                             </td>
                             <td>
                                 @{
-                                    TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(6));
+                                    TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(7));
                                     string time = remaining.Days.ToString().Replace("-", "") + " Days " + remaining.Hours.ToString().Replace("-", "") + " Hours";
                                 }
                                 @time
