@@ -51,28 +51,32 @@ namespace LibraryManagement.Controllers
 
             DetailsViewModel bookDetail = new DetailsViewModel();
             bookDetail.book = book;
+            bookDetail.canBorrow = false;
 
-            // Check if book can be borrowed            
-            var userFilter = Builders<User>.Filter.Eq(u => u.Username, username);
-            User user = await dbService.usersCollection.Find(userFilter).FirstAsync();
+            // Check if book can be borrowed
+            if(username != "noUser")
+            {
+                var userFilter = Builders<User>.Filter.Eq(u => u.Username, username);
+                User user = await dbService.usersCollection.Find(userFilter).FirstAsync();
 
-            if(user == null)
-            {
-                return NotFound();
-            }
+                if (user == null)
+                {
+                    return NotFound();
+                }
 
-            if(user.RentedBooks == null)
-            {
-                bookDetail.canBorrow = true;
-            }
-            else if (user.RentedBooks.Contains((Guid)id))
-            {
-                bookDetail.canBorrow = false;
-            }
-            else
-            {
-                bookDetail.canBorrow = true;
-            }
+                if (user.RentedBooks == null)
+                {
+                    bookDetail.canBorrow = true;
+                }
+                else if (user.RentedBooks.Contains((Guid)id))
+                {
+                    bookDetail.canBorrow = false;
+                }
+                else
+                {
+                    bookDetail.canBorrow = true;
+                }
+            }           
 
             return View(bookDetail);
         }
