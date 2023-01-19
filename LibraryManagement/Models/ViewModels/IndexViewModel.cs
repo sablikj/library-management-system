@@ -8,5 +8,9 @@ namespace LibraryManagement.Models.ViewModels
         public IList<CarouselItem> CarouselItem { get; set; }
 
         public IList<Book> Books { get; set; }
+
+        public IList<Book> PopularBooks { get; set; }
+
+        public List<Book> SelectedBooks { get; set; }
     }
 }

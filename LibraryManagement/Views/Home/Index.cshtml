@@ -1,4 +1,4 @@
-@model IEnumerable<LibraryManagement.Models.Entity.Book>
+@model IndexViewModel
 
 @{
     ViewData["Title"] = "Home";
@@ -18,41 +18,41 @@
 }
 <!-- Carousel -->
 <section class="mb-7 me-0">
-    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 h-50 w-100 shadow bg-white" style="border-radius: .75rem">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 h-50 shadow bg-white" style="border-radius: .75rem">
         <div id="carouselHero" class="carousel slide carousel-fade h-50 w-100 justify-content-center text-center" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @{
                     int i = 0;
-                    foreach (var item in Model)
+                    foreach (var item in Model.PopularBooks)
                     {
                         i++;
                         var active = i == 1 ? "active" : "";
 
-                        <div class="carousel-item p-4 justify-content-center @active">
-                            @{
+                            <div class="carousel-item p-4 justify-content-center @active">
+                                @{
                                 var base64 = Convert.ToBase64String(item.ImageContent);
                                 var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 
-                            }                           
-                            <a asp-action="Details" asp-route-id="@item.Id" asp-route-username="@username">
-                                    <div class="row">
-                                    <div class="col-4 mx-auto d-block">
-                                        <img src="@imgSrc" class="w-50 img-responsive" alt="item.ImageAlt">
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="justify-content-start text-start w-100">
-                                            <h2 class="mb-0">@Html.DisplayFor(modelItem => item.Name)</h2>
-                                            <p class="mb-0">@Html.DisplayFor(modelItem => item.Author)</p>
+                                }                           
+                                <a asp-action="Details" asp-route-id="@item.Id" asp-route-username="@username">
+                                        <div class="row">
+                                        <div class="col-4 mx-auto d-block">
+                                            <img src="@imgSrc" class="w-50 img-responsive" alt="item.ImageAlt">
                                         </div>
+                                        <div class="col-8">
+                                            <div class="justify-content-start text-start w-100">
+                                                <h2 class="mb-0">@Html.DisplayFor(modelItem => item.Name)</h2>
+                                                <p class="mb-0">@Html.DisplayFor(modelItem => item.Author)</p>
+                                            </div>
 
-                                        <hr />
-                                        <div class="text-start">
-                                            @Html.DisplayFor(modelItem => item.Description)
+                                            <hr />
+                                            <div class="text-start">
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
                     }
                 }
             </div>
@@ -64,7 +64,11 @@
     <!-- Random books -->
     <section class="mb-7 col-9">
         <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 h-100 shadow bg-white" style="border-radius: .75rem; float:left">
-            @foreach (var item in Model)
+            <div class="m-2 mx-auto w-100">
+                <h4 class="m-2">Selected titles</h4>
+                <hr />
+            </div>
+            @foreach (var item in Model.SelectedBooks)
             {                
                 <a asp-action="Details" asp-route-id="@item.Id" asp-route-username="@username">
                     <div class="card card-text col m-2 bg-white shadow d-flex justify-content-center text-center" style="border-radius: .75rem">
@@ -94,32 +98,31 @@
     <section class="mb-7 col-3">
         <div class="row row-cols-3 row-cols-md-3 row-cols-xl-1 h-100 w-75 shadow bg-white" style="border-radius: .75rem; float:right;">
             <div class="m-2 mx-auto">
-                <h4>Popular titles</h4>
+                <h4 class="m-2">Popular titles</h4>
                 <hr />
             </div>
             
             @{
                 int a = 0;
 
-                @foreach (var item in Model)
+                    @foreach (var item in Model.SelectedBooks)
                 {
                     ++a;
-                    <a asp-action="Details" asp-route-id="@item.Id" asp-route-username="@username">
-                        @{
+                        <a asp-action="Details" asp-route-id="@item.Id" asp-route-username="@username">
+                            @{
                             if (a < 4)
                             {
-                                <!-- Product image-->
-                                <div class="justify-content-center text-center">
-                                    @{
+                                        <!-- Product image-->
+                                        <div class="justify-content-center text-center">
+                                            @{
                                         var base64 = Convert.ToBase64String(item.ImageContent);
                                         var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                                    }
-                                    <img class="w-50 card-img" src="@imgSrc" alt="item.ImageAlt" />
-                                </div>
-           
+                                            }
+                                            <img class="w-50 card-img" src="@imgSrc" alt="item.ImageAlt" />
+                                        </div>           
                             }
-                        }
-                    </a>
+                            }
+                        </a>
                 }
             }
         </div>

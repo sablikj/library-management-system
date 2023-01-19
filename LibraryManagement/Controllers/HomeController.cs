@@ -26,7 +26,20 @@ namespace LibraryManagement.Controllers
 
         public IActionResult Index()
         {
-            return View(dbService.bookCollection.AsQueryable<Book>().ToList());
+            IndexViewModel indexVM = new IndexViewModel();
+            // Only available books
+            FilterDefinition<Book> filter = Builders<Book>.Filter.Gt(b => b.Available, 0);
+
+            // Popular books - least available
+            SortDefinition<Book> sortPopular = Builders<Book>.Sort.Ascending(b => b.Available);
+            indexVM.PopularBooks = dbService.bookCollection.Find(filter).Sort(sortPopular).Limit(3).ToList();
+
+            // Random book            
+            Random rnd = new Random();
+            indexVM.SelectedBooks = dbService.bookCollection.Find(filter).ToList().OrderBy(x => rnd.Next()).Take(8).ToList();             
+
+            //return View(dbService.bookCollection.AsQueryable<Book>().ToList());
+            return View(indexVM);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
