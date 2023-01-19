@@ -280,11 +280,11 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 {
                     filterName = builder.Regex(b => b.Name, new BsonRegularExpression(bookIndexVM.SearchBook.Pascalize()));
                 }
-                else if (bookIndexVM.SearchYear != 0 && bookIndexVM.SearchYear != null)
+                if (bookIndexVM.SearchYear != 0 && bookIndexVM.SearchYear != null)
                 {
                     filterYear = builder.Eq(b => b.Year, bookIndexVM.SearchYear);
                 }
-                else if (bookIndexVM.SearchAuthor != null)
+                if (bookIndexVM.SearchAuthor != null)
                 {
                     filterAuthor = builder.Regex(b => b.Author, new BsonRegularExpression(bookIndexVM.SearchAuthor.Pascalize()));
                 }

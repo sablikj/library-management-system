@@ -246,9 +246,14 @@ namespace LibraryManagement.Areas.Customer.Controllers
                     Valid = true,
                     LoanItems = items,
                     BookNames = book.Name
-                };                
-            
-                IList<Guid> rentedBooks = user.RentedBooks;
+                };
+
+                IList<Guid> rentedBooks = new List<Guid>();
+                if (user.RentedBooks != null)
+                {
+                    rentedBooks = user.RentedBooks;
+                }
+                 
                 rentedBooks.AddRange(loan.LoanItems);
 
                 var userUpdate = Builders<User>.Update.Set(u => u.RentedBooks, rentedBooks);

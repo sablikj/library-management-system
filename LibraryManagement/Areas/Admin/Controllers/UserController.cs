@@ -397,23 +397,23 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 filterName = builder.Regex(u => u.Name, new BsonRegularExpression(userIndexVM.SearchName.Pascalize()));
             }
-            else if (userIndexVM.SearchSurname != null)
+            if (userIndexVM.SearchSurname != null)
             {
                 filterSurname = builder.Regex(u => u.Surname, new BsonRegularExpression(userIndexVM.SearchSurname.Pascalize()));
             }
-            else if (userIndexVM.SearchStreet != null)
+            if (userIndexVM.SearchStreet != null)
             {
                 filterStreet = builder.Regex(u => u.Street, new BsonRegularExpression(userIndexVM.SearchStreet.Pascalize()));
             }
-            else if (userIndexVM.SearchCity != null)
+            if (userIndexVM.SearchCity != null)
             {
                 filterCity = builder.Regex(u => u.City, new BsonRegularExpression(userIndexVM.SearchCity.Pascalize()));
             }
-            else if (userIndexVM.SearchZip != null)
+            if (userIndexVM.SearchZip != null)
             {
                 filterZip = builder.Eq(b => b.ZipCode, userIndexVM.SearchZip);
             }
-            else if (userIndexVM.SearchSSN != null)
+            if (userIndexVM.SearchSSN != null)
             {
                 filterSSN = builder.Eq(b => b.SSN, userIndexVM.SearchSSN);
             }

@@ -13,11 +13,11 @@
         <form asp-action="Search" method="get" class="card shadow border-0 mx-auto w-50" style="border-radius: .75rem">
             <div class="row my-2 d-flex justify-content-center align-items-center">
                 <div class="col-md-3">
-                    <input asp-for="SearchName" type="text" class="form-control" placeholder="Karel">
+                    <input asp-for="SearchName" type="text" class="form-control" placeholder="Name">
                     <span asp-validation-for="SearchName" class="text-danger"></span>                    
                 </div>
                 <div class="col-md-3">
-                    <input asp-for="SearchSurname" type="text" class="form-control" placeholder="Polák">
+                    <input asp-for="SearchSurname" type="text" class="form-control" placeholder="Surname">
                     <span asp-validation-for="SearchSurname" class="text-danger"></span>
                 </div>
                 <div class="col-md-3">
@@ -31,15 +31,15 @@
                 <div class="collapse" id="collapseExample">
                     <div class="row py-2">
                         <div class="col-md-6">
-                            <input asp-for="SearchStreet" type="text" placeholder="Dlouhá" class="form-control w-100 mb-2">
+                            <input asp-for="SearchStreet" type="text" placeholder="Street" class="form-control w-100 mb-2">
                             <span asp-validation-for="SearchStreet" class="text-danger"></span>
-                            <input asp-for="SearchZip" type="number" class="form-control w-100" placeholder="760 01">
+                            <input asp-for="SearchZip" type="number" class="form-control w-100" placeholder="ZIP code">
                             <span asp-validation-for="SearchZip" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
-                            <input asp-for="SearchCity" type="text" class="form-control w-100 mb-2" placeholder="Zlín">
+                            <input asp-for="SearchCity" type="text" class="form-control w-100 mb-2" placeholder="City">
                             <span asp-validation-for="SearchCity" class="text-danger"></span>                            
-                            <input asp-for="SearchSSN" type="number" class="form-control w-100" placeholder="12345678910">
+                            <input asp-for="SearchSSN" type="number" class="form-control w-100" placeholder="SSN">
                             <span asp-validation-for="SearchSSN" class="text-danger"></span>
                         </div>
                     </div>
