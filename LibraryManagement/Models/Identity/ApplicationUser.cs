@@ -1,4 +1,6 @@
 ﻿using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 using MongoDbGenericRepository.Attributes;
 using System.ComponentModel.DataAnnotations;
 
@@ -34,5 +36,8 @@ namespace LibraryManagement.Models.Identity
         public bool Approved { get; set; }
 
         public bool Banned { get; set; }
+
+        [BsonRepresentation(BsonType.DateTime)]
+        public DateTime? BannedDate { get; set; }
     }
 }

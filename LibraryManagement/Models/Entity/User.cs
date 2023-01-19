@@ -52,5 +52,8 @@ namespace LibraryManagement.Models.Entity
         public bool Approved { get; set; }
 
         public bool Banned { get; set; }
+
+        [BsonRepresentation(BsonType.DateTime)]
+        public DateTime? BannedDate { get; set; }
     }
 }

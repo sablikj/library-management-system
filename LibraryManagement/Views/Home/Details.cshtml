@@ -1,4 +1,4 @@
-﻿@model LibraryManagement.Models.Entity.Book
+﻿@model DetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +8,7 @@
 <div class="container d-flex justify-content-center mb-7" id="logreg-forms" style="border-radius: .75rem">
     <div class="bg-white px-4 w-75 shadow" style="border-radius: .75rem">
         <h1 class="pt-2 d-flex justify-content-between align-items-center">
-            @Model.Name
+            @Model.book.Name
             <span>                
                 <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
             </span>
@@ -19,7 +19,7 @@
             <div class="col w-25">
                 <div class="col w-50 largepic mx-auto d-block">
                     @{
-                        var base64 = Convert.ToBase64String(Model.ImageContent);
+                        var base64 = Convert.ToBase64String(Model.book.ImageContent);
                         var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
                     }
                     
@@ -31,73 +31,81 @@
             <div class="col w-75">
                 <div class="row">
                     <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.Author)
+                        @Html.DisplayNameFor(model => model.book.Author)
                     </dt>
                     <dd class="col w-25">
-                        @Html.DisplayFor(model => model.Author)
+                        @Html.DisplayFor(model => model.book.Author)
                     </dd>
                 </div>
                 <div class="row">
                     <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.Pages)
+                        @Html.DisplayNameFor(model => model.book.Pages)
                     </dt>
                     <dd class="col w-75">
-                        @Html.DisplayFor(model => model.Pages)
+                        @Html.DisplayFor(model => model.book.Pages)
                     </dd>
                 </div>
                 <div class="row">
                     <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.Year)
+                        @Html.DisplayNameFor(model => model.book.Year)
                     </dt>
                     <dd class="col w-75">
-                        @Html.DisplayFor(model => model.Year)
+                        @Html.DisplayFor(model => model.book.Year)
                     </dd>
                 </div>
                 <div class="row">
                     <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.ISBN)
+                        @Html.DisplayNameFor(model => model.book.ISBN)
                     </dt>
                     <dd class="col w-75">
-                        @Html.DisplayFor(model => model.ISBN)
+                        @Html.DisplayFor(model => model.book.ISBN)
                     </dd>
                 </div>                
                 <div class="row">
                     <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.Quantity)
+                        @Html.DisplayNameFor(model => model.book.Quantity)
                     </dt>
                     <dd class="col w-75">
-                        @Html.DisplayFor(model => model.Quantity)
+                        @Html.DisplayFor(model => model.book.Quantity)
                     </dd>
                 </div>
                 <div class="row">
                     <dt class="col w-25">
-                        @Html.DisplayNameFor(model => model.Available)
+                        @Html.DisplayNameFor(model => model.book.Available)
                     </dt>
                     <dd class="col w-75">
-                        @Html.DisplayFor(model => model.Available)
+                        @Html.DisplayFor(model => model.book.Available)
                     </dd>
                 </div>
                 <!--Buttons-->
                 <div class="row mt-10 w-100">
-                    @if(User.Identity.IsAuthenticated == true)
+                    @if (User.Identity.IsAuthenticated == true && User.IsInRole("Customer"))
                     {
-                        if(Model.Available > 0)
+                        if(Model.canBorrow)
                         {
-                            // Display borrow button only if user is logged in and book is available
-                            <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white w-25 mx-auto d-block" asp-area="Customer" asp-controller="Customer" asp-action="CreateLoan" asp-route-bookId=@Model.Id asp-route-username=@User.Identity.Name><i class="bi bi-book me-2"></i>    Borrow</a>
+                            if (Model.book.Available > 0)
+                            {
+                                // Display borrow button only if user is logged in and book is available
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-primary text-white w-25 mx-auto d-block" asp-area="Customer" asp-controller="Customer" asp-action="CreateLoan" asp-route-bookId=@Model.book.Id asp-route-username=@User.Identity.Name><i class="bi bi-book me-2"></i>    Borrow</a>
+                            }
+                            else
+                            {
+                                // Book is out of stock
+                                <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary disabled w-50 mx-auto d-block"><i class="bi bi-x-circle me-2"></i>    Out of stock</a>
+                            }
                         }
                         else
                         {
-                            // Book is out of stock
-                            <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary disabled w-50 mx-auto d-block"><i class="bi bi-x-circle me-2"></i>    Out of stock</a>
-                        }                        
+                            // User already borrowed this book
+                            <a style="margin-bottom:5px;" class="btn btn-sm btn-secondary disabled w-50 mx-auto d-block"><i class="bi bi-x-circle me-2"></i>    Already borrowed</a>
+                        }                                              
                     }
                 </div>
             </div>
         </dl>
         <hr />
         <dl class="row mb-7 px-4 py-2">            
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.book.Description)
         </dl>
     </div>    
 </div>

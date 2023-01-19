@@ -3,6 +3,7 @@ using LibraryManagement.Areas.Admin.Controllers;
 using LibraryManagement.Areas.Admin.Models.ViewModels;
 using LibraryManagement.Controllers;
 using LibraryManagement.Models.Entity;
+using LibraryManagement.Models.ViewModels;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,11 +45,14 @@ namespace LibraryManagement.Areas.Customer.Controllers
 
             // Retriving Books from db
             IList<Book> rentedBooks = new List<Book>();
-            foreach (var item in customer.RentedBooks)
-            {
-                var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
-                rentedBooks.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
-            }            
+            if (customer.RentedBooks != null)
+            {                
+                foreach (var item in customer.RentedBooks)
+                {
+                    var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                    rentedBooks.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+                }
+            }                      
 
             // Getting loan history
             var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.UserId, customer.Id);
@@ -186,7 +190,21 @@ namespace LibraryManagement.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-            if (userResult.ModifiedCount == 1 && bookResult.ModifiedCount == 1)
+
+            // Set loan to inactive
+            var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.LoanItems[0], bookId);
+            loanFilter &= Builders<Loan>.Filter.Eq(loan => loan.Valid, true);
+
+            Loan loan = await dbService.loanCollection.Find(loanFilter).FirstOrDefaultAsync();
+            var loanUpdate = Builders<Loan>.Update
+                                .Set(l => l.Valid, false);
+            var loanResult = await dbService.loanCollection.UpdateOneAsync(loanFilter, loanUpdate);
+            if (!loanResult.IsAcknowledged)
+            {
+                return NotFound();
+            }
+
+            if (userResult.ModifiedCount == 1 && bookResult.ModifiedCount == 1 && loanResult.ModifiedCount == 1)
             {
                 return RedirectToAction(nameof(CustomerController.Index), nameof(CustomerController).Replace("Controller", ""), new { area = "Customer", id = user.Id });
             }
@@ -207,8 +225,8 @@ namespace LibraryManagement.Areas.Customer.Controllers
 
                 // Book quantity edit                
                 var filter = Builders<Book>.Filter.Eq(b => b.Id, bookId);
-                Book book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();
-
+                Book book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();                
+                
                 var update = Builders<Book>.Update.Set(b => b.Available, book.Available - 1);
 
                 var result = await dbService.bookCollection.UpdateOneAsync(filter, update);
@@ -246,7 +264,12 @@ namespace LibraryManagement.Areas.Customer.Controllers
                 // Add loan to DB
                 await dbService.loanCollection.InsertOneAsync(loan);
                 ViewBag.Message = "Loan created successfully.";
-                return View("../Home/Details", book);                
+
+                // Create view for return
+                DetailsViewModel bookDetail = new DetailsViewModel();
+                bookDetail.book = book;
+                bookDetail.canBorrow = false;
+                return View("../Home/Details", bookDetail);                
             }
             return NotFound();
         }

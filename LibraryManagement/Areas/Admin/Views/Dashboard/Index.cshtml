@@ -145,7 +145,7 @@
     </span>
 
     <!--Not Approved Users-->
-    @if (Model.completeVM.Users.Any(u => u.Approved == false))
+    @if (Model.completeVM.Users.Any(u => u.Approved == false && u.Banned == false))
     {
         <div class="card shadow border-0 mb-7">
             <div class="card-header">
@@ -155,6 +155,7 @@
                 <table class="table table-hover table-nowrap">
                     <thead class="thead-light">
                         <tr>
+                            <th scope="col">#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Username</th>
                             <th scope="col">Email</th>
@@ -166,11 +167,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @{ int i = 0; }
                         @foreach (var item in Model.completeVM.Users)
-                        {
+                        {                            
                             @if (item.Approved == false && item.Banned == false)
                             {
                                 <tr>
+                                    <td>
+                                        @{
+                                            i++;
+                                        }
+                                        @i
+                                    </td>
                                     <td>
                                         @{
                                             string name = item.Name + " " + item.Surname;
@@ -224,7 +232,7 @@
                 </table>
             </div>
             <div class="card-footer border-0 py-5">
-                <span class="text-muted text-sm">Found @Model.completeVM.Users.Count results.</span>
+                <span class="text-muted text-sm">Found @i results.</span>
             </div>
         </div>
     }

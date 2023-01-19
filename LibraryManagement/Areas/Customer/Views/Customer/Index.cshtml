@@ -153,8 +153,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Created On</th>
                         <th scope="col">Time Remaining</th>
-                        <th scope="col">Books</th>
-                        <th scope="col">Quantity</th>                        
+                        <th scope="col">Name of the book</th>                                                
                     </tr>
                 </thead>
                 <tbody>
@@ -186,17 +185,14 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.BookNames)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LoanItems.Count)
-                            </td>                            
+                            </td>                                                       
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
         <div class="card-footer border-0 py-5">
-            <span class="text-muted text-sm">Found @Model.Loans.Count() results.</span>
+            <span class="text-muted text-sm">Found @i results.</span>
         </div>
     </div>
     <!--Loan history-->
@@ -210,8 +206,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Created On</th>
-                        <th scope="col">Book</th>
-                        <th scope="col">Quantity</th>                        
+                        <th scope="col">Name of the book</th>                                                
                     </tr>
                 </thead>
                 <tbody>
@@ -232,10 +227,7 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.BookNames)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LoanItems.Count)
-                            </td>                            
+                            </td>                                                        
                         </tr>
                     }
                 </tbody>

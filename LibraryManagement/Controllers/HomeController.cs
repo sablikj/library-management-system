@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Areas.Admin.Models.ViewModels;
 using LibraryManagement.Models;
 using LibraryManagement.Models.Entity;
+using LibraryManagement.Models.ViewModels;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -34,12 +35,13 @@ namespace LibraryManagement.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid? id, string? username)
         {
             if (id == null)
             {
                 return NotFound();
-            }
+            }           
+
             var filter = Builders<Book>.Filter.Eq(book => book.Id, id);
             var book = await dbService.bookCollection.Find(filter).FirstOrDefaultAsync();
             if (book == null)
@@ -47,7 +49,32 @@ namespace LibraryManagement.Controllers
                 return NotFound();
             }
 
-            return View(book);
+            DetailsViewModel bookDetail = new DetailsViewModel();
+            bookDetail.book = book;
+
+            // Check if book can be borrowed            
+            var userFilter = Builders<User>.Filter.Eq(u => u.Username, username);
+            User user = await dbService.usersCollection.Find(userFilter).FirstAsync();
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            if(user.RentedBooks == null)
+            {
+                bookDetail.canBorrow = true;
+            }
+            else if (user.RentedBooks.Contains((Guid)id))
+            {
+                bookDetail.canBorrow = false;
+            }
+            else
+            {
+                bookDetail.canBorrow = true;
+            }
+
+            return View(bookDetail);
         }
 
         public IActionResult Books(bookIndexViewModel bookIndexVM)

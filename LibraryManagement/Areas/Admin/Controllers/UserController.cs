@@ -83,7 +83,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Approved = user.Approved,
                 Banned = user.Banned,
                 Loans = loans,         
-                Books = books
+                Books = books                
             };
 
             return View(userVM);
@@ -117,7 +117,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     Email = user.Email,
                     RentedBooks = new List<Guid>(),
                     Approved = true,
-                    Banned = false
+                    Banned = false,
+                    BannedDate = DateTime.UnixEpoch
                 };
 
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
@@ -312,6 +313,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
                 var update = Builders<User>.Update
                                            .Set(c => c.Banned, true)
+                                           .Set(c => c.BannedDate, DateTime.Now)
                                            .Set(c => c.Approved, false);
                 var result = await dbService.usersCollection.UpdateOneAsync(filter, update);
 

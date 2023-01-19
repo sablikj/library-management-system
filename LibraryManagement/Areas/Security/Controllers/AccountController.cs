@@ -92,7 +92,8 @@ namespace LibraryManagement.Areas.Security.Controllers
                     Email = registerVM.Email,
                     RentedBooks = {},
                     Approved = false,
-                    Banned = false                    
+                    Banned = false,
+                    BannedDate = DateTime.UnixEpoch
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(appUser, registerVM.Password);
