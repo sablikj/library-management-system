@@ -49,8 +49,12 @@
                         </td>
                         <td>
                                 @{
-                                    TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(7));
-                                    string time = remaining.Days.ToString().Replace("-", "") + " Days " + remaining.Hours.ToString().Replace("-", "") + " Hours";
+                                    string time = "";
+                                    if(item.Valid == true)
+                                    {
+                                        TimeSpan remaining = (DateTime.Now - item.CreatedOn.AddDays(7));
+                                        time = remaining.Days.ToString().Replace("-", "") + " Days " + remaining.Hours.ToString().Replace("-", "") + " Hours";
+                                    }                                    
                                 }
                             @time
                         </td>                              

@@ -201,9 +201,24 @@
                                         @Html.DisplayFor(modelItem => item.ZipCode)
                                     </td>
                                     <td>
-                                        <span class="badge badge-lg badge-dot">
-                                            <i class="bg-warning"></i>Not approved
-                                        </span>
+                                        @if (item.Approved == true)
+                                        {
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-success"></i>Approved
+                                            </span>
+                                        }
+                                        @if (item.Approved == false && item.Banned == false)
+                                        {
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-warning"></i>Not approved
+                                            </span>
+                                        }
+                                        @if (item.Banned == true)
+                                        {
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-danger"></i>Banned
+                                            </span>
+                                        }
                                     </td>
                                     <td class="text-center">
                                         <a style="margin-bottom:5px;" class="btn btn-success" asp-controller="User" asp-action="Approve" asp-route-id="@item.Id"><i class="bi bi-check2"></i></a>
@@ -250,7 +265,7 @@
                         }
                         @foreach (var item in Model.completeVM.Users)
                         {
-                            @if (item.Approved == false && item.Banned == false)
+                            @if (item.Approved == false && item.Banned == true)
                             {
                                 <tr>
                                     <td>

@@ -46,11 +46,14 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
             // Retriving Books from db
             IList<Book> rentedBooks = new List<Book>();
-            foreach (var item in user.RentedBooks)
+            if(user.RentedBooks != null)
             {
-                var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
-                rentedBooks.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
-            }            
+                foreach (var item in user.RentedBooks)
+                {
+                    var bookFilter = Builders<Book>.Filter.Eq(book => book.Id, item);
+                    rentedBooks.Add(await dbService.bookCollection.Find(bookFilter).FirstOrDefaultAsync());
+                }
+            }                        
 
             // Getting loan history
             var loanFilter = Builders<Loan>.Filter.Eq(loan => loan.UserId, id);
