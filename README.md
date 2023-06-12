@@ -23,3 +23,5 @@ Online library management system in ASP .NET with Mongo database created as an u
   * Loan management
     * List of loans
     * CRUD ops
+
+Created by Jan Sáblík & David Bilnica
